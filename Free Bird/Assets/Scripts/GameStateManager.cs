@@ -26,6 +26,10 @@ public class GameStateManager
     }*/
 
     public static bool gameStart = false;
+    public static bool win = false;
+    public static int numOfSuccessfulCombos = 0;
+    public static int stage; //1 is easy, 2 is mid, 3 is difficult
+
 
     public static void Playing(bool start)
     {
@@ -36,6 +40,40 @@ public class GameStateManager
     {
         return gameStart;
     }
+
+    public static void SetWin(bool success)
+    {
+        win = success;
+    }
+
+    public static bool GetWin()
+    {
+        return win;
+    }
+
+    public static void SetNumOfSuccessfulCombos(int difficultyStage)
+    {
+        numOfSuccessfulCombos = difficultyStage;
+    }
+
+    public static int GetNumOfSuccessfulCombos()
+    {
+        return numOfSuccessfulCombos;
+    }
+
+    public static void SetDifficulty(int setdifficulty)
+    {
+         stage = setdifficulty;
+    }
+
+    public static int GetDifficulty()
+    {
+        return stage;
+    }
+
+
+
+
 
 
 }

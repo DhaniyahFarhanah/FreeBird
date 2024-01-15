@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BerdMovement : MonoBehaviour
 {
-    bool isPlaying;
-
     //Cursor stuff
     Vector3 mouseScreenPosition;            //Position of where mouse is in the screen units
     Vector3 mouseWorldPosition;             //Position of where the mouse is to the world units
@@ -28,15 +26,14 @@ public class BerdMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isPlaying = GameStateManager.GetGameStatus();
+
     }
 
     // Update is called once per frame
     void Update() //for inputs
     {
-        isPlaying = GameStateManager.GetGameStatus();
 
-        if (isPlaying) //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin())  //Playing the game
         {
             MoveBerdWithMouse();
         }

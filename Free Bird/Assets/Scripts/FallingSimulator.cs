@@ -14,8 +14,6 @@ public class FallingSimulator : MonoBehaviour
 
     [SerializeField] GameObject EndPoint; //Position of where the end of the trees will go
 
-    bool isPlaying;
-
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +24,8 @@ public class FallingSimulator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isPlaying = GameStateManager.GetGameStatus();
-        
-        
-        if (isPlaying) //Playing the game
+
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin()) //Playing the game
         {
             if(speed < maxSpeed)
             {
