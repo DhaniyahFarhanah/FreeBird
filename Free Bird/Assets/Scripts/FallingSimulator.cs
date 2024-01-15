@@ -6,9 +6,11 @@ using UnityEngine;
 public class FallingSimulator : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] float minSpeed;
     [SerializeField] float maxSpeed;
 
     [SerializeField] float timeTilMaxVelocity;
+    float interval;
 
     [SerializeField] GameObject EndPoint; //Position of where the end of the trees will go
 
@@ -18,7 +20,7 @@ public class FallingSimulator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        minSpeed = speed;
     }
 
     // Update is called once per frame
@@ -31,7 +33,8 @@ public class FallingSimulator : MonoBehaviour
         {
             if(speed < maxSpeed)
             {
-                speed += maxSpeed / timeTilMaxVelocity;
+                interval = (maxSpeed - minSpeed) / timeTilMaxVelocity;
+                speed += interval;
             }
 
             transform.position = Vector2.MoveTowards(transform.position, EndPoint.transform.position, speed * Time.deltaTime);
