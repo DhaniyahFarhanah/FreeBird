@@ -179,6 +179,18 @@ public class ComboManager : MonoBehaviour
         }
     }
 
+    void EmptyCanvas()
+    {
+        for (int i = 0; i < comboHolders.Length; i++)
+        {
+            comboHolders[i].SetActive(false);          
+        }
+    }
+
+    void FillWithSprite()
+    {
+
+    }
     void NextCombo()
     {
         GenerateNewCombo();
