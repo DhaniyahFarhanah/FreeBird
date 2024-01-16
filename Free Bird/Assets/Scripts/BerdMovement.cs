@@ -32,7 +32,6 @@ public class BerdMovement : MonoBehaviour
     // Update is called once per frame
     void Update() //for inputs
     {
-
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin())  //Playing the game
         {
             MoveBerdWithMouse();

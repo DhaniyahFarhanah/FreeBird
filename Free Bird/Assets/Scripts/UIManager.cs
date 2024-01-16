@@ -22,8 +22,6 @@ public class UIManager : MonoBehaviour
             Pause();
         }
 
-        //for personal checks
-        Debug.Log("Game Status: " + GameStateManager.GetGameStatus());
     }
 
     void Pause()

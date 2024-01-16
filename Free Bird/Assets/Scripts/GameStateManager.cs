@@ -27,10 +27,16 @@ public class GameStateManager
 
     public static bool gameStart = false;
     public static bool win = false;
-    public static int numOfSuccessfulCombos = 0;
-    public static int stage; //1 is easy, 2 is mid, 3 is difficult
+    public static int stage = 2; //2 is easy, 4 is mid, 6 is difficult. It's the amount of combo pieces per difficulty
+    public static string currentCombo = "";
+    public enum ComboStates
+    {
+        empty,
+        success,
+        failure
+    }
 
-
+    public static List<ComboStates> state;
     public static void Playing(bool start)
     {
         gameStart = start;
@@ -51,16 +57,6 @@ public class GameStateManager
         return win;
     }
 
-    public static void SetNumOfSuccessfulCombos(int difficultyStage)
-    {
-        numOfSuccessfulCombos = difficultyStage;
-    }
-
-    public static int GetNumOfSuccessfulCombos()
-    {
-        return numOfSuccessfulCombos;
-    }
-
     public static void SetDifficulty(int setdifficulty)
     {
          stage = setdifficulty;
@@ -69,6 +65,26 @@ public class GameStateManager
     public static int GetDifficulty()
     {
         return stage;
+    }
+
+    public static void SetCombo(string combo)
+    {
+        currentCombo = combo;
+    }
+    
+    public static string GetCombo()
+    {
+        return currentCombo;
+    }
+
+    public static void SetState(List<ComboStates> stateArray)
+    {
+        state = stateArray;
+    }
+
+    public static List<ComboStates> GetState()
+    {
+        return state;
     }
 
 

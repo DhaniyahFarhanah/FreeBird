@@ -1,30 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ComboManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject[] comboHolders;                  //gameobject of each combo piece
+    GameObject[] comboHolders;                      //gameobject of each combo piece
     [SerializeField]
-    Sprite[] comboSprites;                      //should be total of 12
+    Sprite[] comboSprites;                          //should be total of 12
     
+    int currentNumOfCombos;                         //current number of combos for the difficulty
+    [SerializeField] int numOfEasyCombos;           //num of different easy combos
+    [SerializeField] int numOfMidCombos;            //num of different mid combos
+    [SerializeField] int numOfHardCombos;           //num of different hard combos
 
-    [SerializeField] int numOfEasyCombos;       //num of different easy combos
-    [SerializeField] int numOfMidCombos;        //num of different mid combos
-    [SerializeField] int numOfHardCombos;       //num of different hard combos
+    int lengthOfCombo;                              //how long is the combo
+    [SerializeField] int current = 0;               //which positionin the combo is selected
+    string currentCombo = "";                       //for generating new combo
+    char clickedChar;
+    char selected;
 
-    int currentNumOfCombos;                     //current number of combos for the difficulty
-    int numOfGameobjectToShow;                  //how many buttons for the combo
-    bool pressedOnce = false;
-    [SerializeField] int current = 0;
+    int numOfCompletedCombo;
 
-    List<char> currentCombo = new List<char>();                         //for generating new combo
-
-    int difficulty = 0;                             //difficulty of the game, 1 is easy, 2 is mid, 3 is easy, 4 is win
+    int difficulty = 0;                             //difficulty of the game, 2 is easy, 4 is mid, 6 is difficult
 
     Dictionary<char, KeyCode> comboButtons = new Dictionary<char, KeyCode>();
+    List<GameStateManager.ComboStates> comboStates = new List<GameStateManager.ComboStates>();
 
 // Start is called before the first frame update
     void Start()
@@ -33,89 +36,82 @@ public class ComboManager : MonoBehaviour
         comboButtons.Add('A', KeyCode.A);
         comboButtons.Add('S', KeyCode.S);
         comboButtons.Add('D', KeyCode.D);
+
+        lengthOfCombo = GameStateManager.GetDifficulty();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (difficulty != GameStateManager.GetDifficulty()) //difficulty is changed, change values as well
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin())  //Playing the game
         {
-            ActivateNeededComboHolders();
-            CheckDifficultyQteAmount();
-            GenerateNewCombo();
-        }
-        
-        if(GameStateManager.GetNumOfSuccessfulCombos() == currentNumOfCombos)
-        {
-            GameStateManager.SetNumOfSuccessfulCombos(0);
-            GameStateManager.SetDifficulty(GameStateManager.GetDifficulty() + 1);
-        }
-
-        else
-        {
-            while(current <= currentCombo.Count)
+            Debug.Log("length of combo: " + lengthOfCombo);
+            if (currentCombo.Length != lengthOfCombo)
             {
-                if (Input.GetKeyDown(comboButtons[currentCombo[current]]))
-                {
-                    current++;
+                GenerateNewCombo();
+                ActivateNeededComboHolders();
 
-                    //change sprite
-                    //move on to next
-                }
-                if (current == numOfGameobjectToShow)
-                {
-                    //finished combo
-                    GenerateNewCombo();
-                }
-                else
-                {
-                    break;
-                }
-                
+                Debug.Log("length of current combo: " + currentCombo.Length);
             }
+
+            if(current < lengthOfCombo)
+            {
+                if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                {
+                    CharClicked();
+                    selected = currentCombo[current];
+
+                    if (clickedChar == selected) //same
+                    {
+                        current++;
+
+                        if(current ==  lengthOfCombo)
+                        {
+                            numOfCompletedCombo++;
+                            GenerateNewCombo() ;
+                        }
+                    }
+                    else if (clickedChar != selected) 
+                    {
+                        current = 0;
+                    }
+                }
+            }
+                                 
         }
-        Debug.Log(currentCombo.Count);
 
-    }
-    void CheckDifficultyQteAmount()
-        // This is to check and associate the amount of combos for each level of difficulty
-    {
-        difficulty = GameStateManager.GetDifficulty();
 
-        switch (difficulty)
+        else //not playing the game
         {
-            case 1:
-                // 4 easy qte, only 2/6 combo gameobjects active
-                currentNumOfCombos = numOfEasyCombos;
-                numOfGameobjectToShow = 4;
-                break;
 
-            case 2:
-                // 8 easy qte, only 4/6 combo gameobjects active
-                currentNumOfCombos = numOfMidCombos;
-                numOfGameobjectToShow = 4;
-                break;
-
-            case 3:
-                // 2 easy qte, only 2/6 combo gameobjects active
-                currentNumOfCombos = numOfHardCombos;
-                numOfGameobjectToShow = 6;
-                break;
-
-            case 4:
-                //Game Win
-                GameStateManager.SetWin(true);
-                GameStateManager.Playing(false);
-                break;
-
-            default: break;
         }
     }
+
+    void CharClicked()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            clickedChar = 'W';
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            clickedChar = 'A';
+        }
+        else if(Input.GetKeyDown(KeyCode.S))
+        {
+            clickedChar = 'S';
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            clickedChar = 'D';
+        }
+    }
+
     void ActivateNeededComboHolders()
     {
         for(int i = 0; i < comboHolders.Length; i++)
         {
-            if(i < numOfGameobjectToShow)
+            if(i < lengthOfCombo)
             {
                 comboHolders[i].SetActive(true);
             }
@@ -128,23 +124,43 @@ public class ComboManager : MonoBehaviour
 
     void GenerateNewCombo()
     {
-        currentCombo.Clear(); //clear previous combo
+        currentCombo = ""; //clear previous combo
+        comboStates.Clear(); //clear previous states
         current = 0;
 
-        for (int i = 0; i < numOfGameobjectToShow; i++)
+        for (int i = 0; i < lengthOfCombo; i++)
         {
             switch (Random.Range(0, 4))
             {
-                case 0: currentCombo.Add('W');
+                case 0: 
+                    currentCombo += "W";
                     break;
-                case 1: currentCombo.Add('A');
+                case 1:
+                    currentCombo += "A";
                     break;
-                case 2: currentCombo.Add('S');
+                case 2:
+                    currentCombo += "S";
                     break;
-                case 3: currentCombo.Add('D');
+                case 3:
+                    currentCombo += "D";
                     break;
             }
+
+            comboStates.Add(GameStateManager.ComboStates.empty);
         }
+
+        GameStateManager.SetCombo(currentCombo);
     }
 
+    void checkSuccessOfCombo()
+    {
+        foreach (GameStateManager.ComboStates x in comboStates)
+        {
+            if (x == GameStateManager.ComboStates.failure)
+            {
+                current = 0;
+            }
+            Debug.Log(x.ToString());
+        }
+    }
 }
