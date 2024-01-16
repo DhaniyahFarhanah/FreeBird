@@ -15,6 +15,7 @@ public class ComboManager : MonoBehaviour
     [SerializeField] int numOfEasyCombos;           //num of different easy combos
     [SerializeField] int numOfMidCombos;            //num of different mid combos
     [SerializeField] int numOfHardCombos;           //num of different hard combos
+    int maxComboForLevel;
 
     int lengthOfCombo;                              //how long is the combo
     [SerializeField] int current = 0;               //which positionin the combo is selected
@@ -22,9 +23,9 @@ public class ComboManager : MonoBehaviour
     char clickedChar;
     char selected;
 
-    int numOfCompletedCombo;
+    [SerializeField] float delay;
 
-    int difficulty = 0;                             //difficulty of the game, 2 is easy, 4 is mid, 6 is difficult
+    int numOfCompletedCombo;
 
     Dictionary<char, KeyCode> comboButtons = new Dictionary<char, KeyCode>();
     List<GameStateManager.ComboStates> comboStates = new List<GameStateManager.ComboStates>();
@@ -38,6 +39,7 @@ public class ComboManager : MonoBehaviour
         comboButtons.Add('D', KeyCode.D);
 
         lengthOfCombo = GameStateManager.GetDifficulty();
+        maxComboForLevel = lengthOfCombo;
     }
 
     // Update is called once per frame
@@ -48,10 +50,19 @@ public class ComboManager : MonoBehaviour
             Debug.Log("length of combo: " + lengthOfCombo);
             if (currentCombo.Length != lengthOfCombo)
             {
-                GenerateNewCombo();
-                ActivateNeededComboHolders();
+                NextCombo();
 
                 Debug.Log("length of current combo: " + currentCombo.Length);
+            }
+
+            if(numOfCompletedCombo == maxComboForLevel) //move to next difficulty
+            {
+                numOfCompletedCombo = 0;
+                GameStateManager.SetDifficulty(lengthOfCombo + 2);
+                lengthOfCombo = GameStateManager.GetDifficulty();
+                maxComboForLevel = lengthOfCombo;
+                //start coroutine after this
+                NextCombo();
             }
 
             if(current < lengthOfCombo)
@@ -61,7 +72,7 @@ public class ComboManager : MonoBehaviour
                     CharClicked();
                     selected = currentCombo[current];
 
-                    if (clickedChar == selected) //same
+                    if (clickedChar == selected) //same (?)
                     {
                         current++;
 
@@ -152,15 +163,27 @@ public class ComboManager : MonoBehaviour
         GameStateManager.SetCombo(currentCombo);
     }
 
-    void checkSuccessOfCombo()
+    void DifficultyChecker()
     {
-        foreach (GameStateManager.ComboStates x in comboStates)
+        switch (GameStateManager.GetDifficulty())
         {
-            if (x == GameStateManager.ComboStates.failure)
-            {
-                current = 0;
-            }
-            Debug.Log(x.ToString());
+            case 2:
+                maxComboForLevel = numOfEasyCombos;
+                break;
+            case 4:
+                maxComboForLevel = numOfMidCombos;
+                break;
+            case 6:
+                maxComboForLevel = numOfHardCombos;
+                break;
         }
     }
+
+    void NextCombo()
+    {
+        GenerateNewCombo();
+        ActivateNeededComboHolders();
+        DifficultyChecker();
+    }    
+    
 }

@@ -904,6 +904,7 @@ MonoBehaviour:
   numOfMidCombos: 4
   numOfHardCombos: 6
   current: 0
+  delay: 2
 --- !u!114 &923992404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1459,7 +1460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6.03
   minSpeed: 0
-  maxSpeed: 33.3
+  maxSpeed: 16
   timeTilMaxVelocity: 1000
   EndPoint: {fileID: 123861535}
 --- !u!1 &1194066508
