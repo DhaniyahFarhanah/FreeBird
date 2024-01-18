@@ -17,10 +17,12 @@ public class BerdMovement : MonoBehaviour
     [SerializeField] float minBerdXaxis;    //Left tree border location on X axis
     [SerializeField] float maxBerdXaxis;    //Right tree border location on Y axis
 
+    Animator anim;
 
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined; //Confines cursor to borders of the screen
+        anim = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -32,7 +34,7 @@ public class BerdMovement : MonoBehaviour
     // Update is called once per frame
     void Update() //for inputs
     {
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin())  //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd())  //Playing the game
         {
             MoveBerdWithMouse();
         }
@@ -63,5 +65,21 @@ public class BerdMovement : MonoBehaviour
         }
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoother * Time.deltaTime);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject collided = collision.gameObject;
+
+        if (collided.CompareTag("Branch"))
+        {
+            //get hit
+        }
+
+        if (collided.CompareTag("Ground"))
+        {
+            Debug.Log("hitGround");
+            GameStateManager.SetEnd(true);
+            anim.SetBool("end", true);
+        }
     }
 }

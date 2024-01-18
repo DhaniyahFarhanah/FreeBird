@@ -26,7 +26,7 @@ public class GameStateManager
     }*/
 
     public static bool gameStart = false;
-    public static bool win = false;
+    public static bool end = false;
     public static int stage = 2; //2 is easy, 4 is mid, 6 is difficult. It's the amount of combo pieces per difficulty
     public static string currentCombo = "";
     public enum ComboStates
@@ -47,14 +47,14 @@ public class GameStateManager
         return gameStart;
     }
 
-    public static void SetWin(bool success)
+    public static void SetEnd(bool success)
     {
-        win = success;
+        end = success;
     }
 
-    public static bool GetWin()
+    public static bool GetEnd()
     {
-        return win;
+        return end;
     }
 
     public static void SetDifficulty(int setdifficulty)

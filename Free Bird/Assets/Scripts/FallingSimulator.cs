@@ -12,7 +12,8 @@ public class FallingSimulator : MonoBehaviour
     [SerializeField] float timeTilMaxVelocity;
     float interval;
 
-    [SerializeField] GameObject EndPoint; //Position of where the end of the trees will go
+    [SerializeField] float endPointY;
+    Vector2 endPoint;
 
 
     // Start is called before the first frame update
@@ -25,15 +26,17 @@ public class FallingSimulator : MonoBehaviour
     void Update()
     {
 
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin()) //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd()) //Playing the game
         {
+            endPoint = new Vector2(transform.position.x, endPointY);
+
             if(speed < maxSpeed)
             {
                 interval = (maxSpeed - minSpeed) / timeTilMaxVelocity;
                 speed += interval;
             }
 
-            transform.position = Vector2.MoveTowards(transform.position, EndPoint.transform.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, endPoint, speed * Time.deltaTime);
         }
 
         else //not playing the game

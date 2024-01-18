@@ -6,12 +6,11 @@ using UnityEngine.UI;
 
 public class ComboManager : MonoBehaviour
 {
-    [SerializeField]
-    GameObject[] comboHolders;                      //gameobject of each combo piece
-    [SerializeField]
-    Sprite[] comboSprites;                          //should be total of 12
+    [SerializeField] GameObject[] comboHolders;     //gameobject of each combo piece
+    [SerializeField] Sprite[] comboSprites;         //should be total of 12
+    [SerializeField] GameObject endScreen;
+    SpriteChanger spriteChange;
     
-    int currentNumOfCombos;                         //current number of combos for the difficulty
     [SerializeField] int numOfEasyCombos;           //num of different easy combos
     [SerializeField] int numOfMidCombos;            //num of different mid combos
     [SerializeField] int numOfHardCombos;           //num of different hard combos
@@ -20,8 +19,10 @@ public class ComboManager : MonoBehaviour
     int lengthOfCombo;                              //how long is the combo
     [SerializeField] int current = 0;               //which positionin the combo is selected
     string currentCombo = "";                       //for generating new combo
-    char clickedChar;
-    char selected;
+    char clickedChar;                               //recording what character the player has clicked
+    char selected;                                  //index of which is selected
+    bool toShow;                                    //check to display the combo images
+    bool toClick;                                   //checks if the combo will record the clicks if wrong
 
     [SerializeField] float delay;
 
@@ -40,19 +41,18 @@ public class ComboManager : MonoBehaviour
 
         lengthOfCombo = GameStateManager.GetDifficulty();
         maxComboForLevel = lengthOfCombo;
+        toShow = true;
+        toClick = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetWin())  //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && toShow && toClick)  //Playing the game
         {
-            Debug.Log("length of combo: " + lengthOfCombo);
-            if (currentCombo.Length != lengthOfCombo)
+            if (currentCombo.Length != lengthOfCombo) //Generate new combo because of 
             {
-                NextCombo();
-
-                Debug.Log("length of current combo: " + currentCombo.Length);
+                StartCoroutine(WaitForNextCombo());
             }
 
             if(numOfCompletedCombo == maxComboForLevel) //move to next difficulty
@@ -61,8 +61,10 @@ public class ComboManager : MonoBehaviour
                 GameStateManager.SetDifficulty(lengthOfCombo + 2);
                 lengthOfCombo = GameStateManager.GetDifficulty();
                 maxComboForLevel = lengthOfCombo;
-                //start coroutine after this
-                NextCombo();
+                GenerateNewCombo();
+                ActivateNeededComboHolders();
+                DifficultyChecker();
+
             }
 
             if(current < lengthOfCombo)
@@ -72,28 +74,48 @@ public class ComboManager : MonoBehaviour
                     CharClicked();
                     selected = currentCombo[current];
 
-                    if (clickedChar == selected) //same (?)
+                    if (clickedChar == selected) //Correct character
                     {
-                        current++;
+                        //change sprite to green 
+                        spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                        spriteChange.image.GetComponent<Image>().color = Color.green;
 
-                        if(current ==  lengthOfCombo)
+                        current++; //move to next character
+
+
+                        if(current == lengthOfCombo) //End of combo, move to next
                         {
                             numOfCompletedCombo++;
-                            GenerateNewCombo() ;
+                            StartCoroutine(WaitForNextCombo());
                         }
                     }
-                    else if (clickedChar != selected) 
+                    else if (clickedChar != selected) //Not correct character
                     {
-                        current = 0;
+                        //change sprite to red
+                        spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                        spriteChange.image.GetComponent<Image>().color = Color.red;
+                        StartCoroutine(WrongCharacter());
                     }
                 }
             }
-                                 
-        }
 
+            if(GameStateManager.GetDifficulty() > 6)
+            {
+                //End game you win!. Probably will check if the bird is not dead lol
+                endScreen.SetActive(true);
+                EmptyCanvas();
+                GameStateManager.Playing(false);
+            }                                 
+        }
 
         else //not playing the game
         {
+
+        }
+
+        if (GameStateManager.GetEnd())
+        {
+            StopAllCoroutines();
 
         }
     }
@@ -161,6 +183,7 @@ public class ComboManager : MonoBehaviour
         }
 
         GameStateManager.SetCombo(currentCombo);
+        toShow = true;
     }
 
     void DifficultyChecker()
@@ -187,15 +210,37 @@ public class ComboManager : MonoBehaviour
         }
     }
 
-    void FillWithSprite()
+    IEnumerator WaitForNextCombo()
     {
+        toShow = false;
 
-    }
-    void NextCombo()
-    {
+        yield return new WaitForSeconds(1f);
+
+        EmptyCanvas();
+
+        yield return new WaitForSeconds(delay);
+
         GenerateNewCombo();
         ActivateNeededComboHolders();
         DifficultyChecker();
-    }    
+
+        toShow = true;
+    }
+
+    IEnumerator WrongCharacter()
+    {
+        toClick = false;
+
+        yield return new WaitForSeconds(0.5f);
+
+        for (int i = 0; i < comboHolders.Length; i++)
+        {
+            spriteChange = comboHolders[i].GetComponent<SpriteChanger>();
+            spriteChange.image.GetComponent<Image>().color = Color.white;
+        }
+
+        current = 0;
+        toClick = true;
+    }
     
 }
