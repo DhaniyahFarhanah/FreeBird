@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -115,7 +116,9 @@ public class ComboManager : MonoBehaviour
 
         if (GameStateManager.GetEnd())
         {
+            PlayDedAnim();
             StopAllCoroutines();
+            Cursor.visible = true;
 
         }
     }
@@ -207,6 +210,17 @@ public class ComboManager : MonoBehaviour
         for (int i = 0; i < comboHolders.Length; i++)
         {
             comboHolders[i].SetActive(false);          
+        }
+    }
+
+    void PlayDedAnim()
+    {
+        for (int i = 0; i < comboHolders.Length; i++)
+        {
+            if (comboHolders[i].activeInHierarchy)
+            {
+                comboHolders[i].GetComponent<Animator>().SetBool("end", true);
+            }
         }
     }
 
