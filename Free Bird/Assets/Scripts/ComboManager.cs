@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +10,23 @@ using UnityEngine.UI;
 public class ComboManager : MonoBehaviour
 {
     [SerializeField] GameObject[] comboHolders;     //gameobject of each combo piece
-    [SerializeField] Sprite[] comboSprites;         //should be total of 12
-    [SerializeField] GameObject endScreen;
     SpriteChanger spriteChange;
-    
+
+    [Header("Combo Info")]
+
     [SerializeField] int numOfEasyCombos;           //num of different easy combos
     [SerializeField] int numOfMidCombos;            //num of different mid combos
     [SerializeField] int numOfHardCombos;           //num of different hard combos
+    [SerializeField] int numOfInsaneCombos;         //num of different insane combos
+    [SerializeField]int maxDifficultyInt;           //difficulty int (it's 8 for now)
     int maxComboForLevel;
+
+    [Header("Skill Display")]
+    [SerializeField] GameObject skill;              //gameobject that holds skill. Mainly for animation stuff
+    [SerializeField] TMP_Text skillDisplay;         //gameobject for 
+    int skillLevel = 0;                             //Skill. Each time fail the combo, count up. 0 means perfect
+
+    [SerializeField] GameObject endScreen;
 
     int lengthOfCombo;                              //how long is the combo
     [SerializeField] int current = 0;               //which positionin the combo is selected
@@ -30,7 +41,6 @@ public class ComboManager : MonoBehaviour
     int numOfCompletedCombo;
 
     Dictionary<char, KeyCode> comboButtons = new Dictionary<char, KeyCode>();
-    List<GameStateManager.ComboStates> comboStates = new List<GameStateManager.ComboStates>();
 
 // Start is called before the first frame update
     void Start()
@@ -44,6 +54,7 @@ public class ComboManager : MonoBehaviour
         maxComboForLevel = lengthOfCombo;
         toShow = true;
         toClick = true;
+        skill.SetActive(false);
     }
 
     // Update is called once per frame
@@ -83,7 +94,6 @@ public class ComboManager : MonoBehaviour
 
                         current++; //move to next character
 
-
                         if(current == lengthOfCombo) //End of combo, move to next
                         {
                             numOfCompletedCombo++;
@@ -93,6 +103,7 @@ public class ComboManager : MonoBehaviour
                     else if (clickedChar != selected) //Not correct character
                     {
                         //change sprite to red
+                        skillLevel++;
                         spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
                         spriteChange.image.GetComponent<Image>().color = Color.red;
                         StartCoroutine(WrongCharacter());
@@ -100,7 +111,7 @@ public class ComboManager : MonoBehaviour
                 }
             }
 
-            if(GameStateManager.GetDifficulty() > 6)
+            if(GameStateManager.GetDifficulty() > maxComboForLevel)
             {
                 //End game you win!. Probably will check if the bird is not dead lol
                 endScreen.SetActive(true);
@@ -116,6 +127,9 @@ public class ComboManager : MonoBehaviour
 
         if (GameStateManager.GetEnd())
         {
+            skill.SetActive(true);
+            skillDisplay.text = "Dumbass";
+            skillDisplay.color = Color.white;
             PlayDedAnim();
             StopAllCoroutines();
             Cursor.visible = true;
@@ -160,8 +174,9 @@ public class ComboManager : MonoBehaviour
 
     void GenerateNewCombo()
     {
+        skill.SetActive(false);
+        skillLevel = 1;
         currentCombo = ""; //clear previous combo
-        comboStates.Clear(); //clear previous states
         current = 0;
 
         for (int i = 0; i < lengthOfCombo; i++)
@@ -182,11 +197,9 @@ public class ComboManager : MonoBehaviour
                     break;
             }
 
-            comboStates.Add(GameStateManager.ComboStates.empty);
         }
 
         GameStateManager.SetCombo(currentCombo);
-        toShow = true;
     }
 
     void DifficultyChecker()
@@ -201,6 +214,9 @@ public class ComboManager : MonoBehaviour
                 break;
             case 6:
                 maxComboForLevel = numOfHardCombos;
+                break;
+            case 8:
+                maxComboForLevel = numOfInsaneCombos;
                 break;
         }
     }
@@ -222,6 +238,8 @@ public class ComboManager : MonoBehaviour
                 comboHolders[i].GetComponent<Animator>().SetBool("end", true);
             }
         }
+
+        skill.GetComponent<Animator>().SetBool("end", true);
     }
 
     IEnumerator WaitForNextCombo()
@@ -231,6 +249,9 @@ public class ComboManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         EmptyCanvas();
+        SkillDisplay();
+        skill.SetActive(true);
+        ResetComboToWhite();
 
         yield return new WaitForSeconds(delay);
 
@@ -238,6 +259,7 @@ public class ComboManager : MonoBehaviour
         ActivateNeededComboHolders();
         DifficultyChecker();
 
+        skill.SetActive(false);
         toShow = true;
     }
 
@@ -247,14 +269,44 @@ public class ComboManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        ResetComboToWhite();
+
+        current = 0;
+        toClick = true;
+    }
+
+    void ResetComboToWhite()
+    {
         for (int i = 0; i < comboHolders.Length; i++)
         {
             spriteChange = comboHolders[i].GetComponent<SpriteChanger>();
             spriteChange.image.GetComponent<Image>().color = Color.white;
         }
+    }
 
-        current = 0;
-        toClick = true;
+    void SkillDisplay()
+    {
+        if(skillLevel == 1)
+        {
+            skillDisplay.text = "Perfect!!";
+            skillDisplay.color = Color.magenta;
+        }
+        else if(skillLevel > 1 && skillLevel < 4)
+        {
+            skillDisplay.text = "Good!";
+            skillDisplay.color = Color.green;
+        }
+        else if (skillLevel >= 4)
+        {
+            skillDisplay.text = "Skill Issue";
+            skillDisplay.color = Color.red;
+        }
+        else
+        {
+            skillDisplay.text = "";
+            skillDisplay.color = Color.white;
+        }
+        
     }
     
 }
