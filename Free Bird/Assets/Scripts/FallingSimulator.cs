@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 // This is to control the movement of the trees/falling
 public class FallingSimulator : MonoBehaviour
 {
-    [SerializeField] float speed;
+    public float speed;
     [SerializeField] float minSpeed;
     [SerializeField] float maxSpeed;
 
@@ -14,6 +15,12 @@ public class FallingSimulator : MonoBehaviour
 
     [SerializeField] float endPointY;
     Vector2 endPoint;
+    [SerializeField] TMP_Text distanceIndicator;
+
+    [SerializeField] Transform player;
+    [SerializeField] Transform ground;
+    float distancetoDeath;
+    [SerializeField] float maxDistance;
 
 
     // Start is called before the first frame update
@@ -25,6 +32,11 @@ public class FallingSimulator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        distancetoDeath = (player.position.y - ground.position.y) * 1/maxDistance;
+
+        distanceIndicator.text = ((int)distancetoDeath) + " feet";
+
+
 
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd()) //Playing the game
         {

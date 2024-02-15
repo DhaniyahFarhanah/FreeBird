@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class BerdMovement : MonoBehaviour
@@ -19,6 +21,11 @@ public class BerdMovement : MonoBehaviour
 
     Animator anim;
 
+    [SerializeField] TMP_Text hpText;
+    int hp = 3;
+    bool hit;
+    [SerializeField] GameObject level;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined; //Confines cursor to borders of the screen
@@ -28,20 +35,28 @@ public class BerdMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        hit = true;
     }
 
     // Update is called once per frame
     void Update() //for inputs
     {
+        hpText.text = hp + " HP";
+
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd())  //Playing the game
         {
             MoveBerdWithMouse();
+            
         }
 
         else //not playing the game
         {
 
+        }
+        if(hp == 0) //death
+        {
+            GameStateManager.SetEnd(true);
+            anim.SetBool("end", true);
         }
     }
 
@@ -51,11 +66,11 @@ public class BerdMovement : MonoBehaviour
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
         mouseXaxis = mouseWorldPosition.x;
 
-        if(mouseXaxis < minBerdXaxis)
+        if (mouseXaxis < minBerdXaxis)
         {
-            desiredPosition = new Vector3(minBerdXaxis ,berdYaxis);
+            desiredPosition = new Vector3(minBerdXaxis, berdYaxis);
         }
-        else if(mouseXaxis > maxBerdXaxis)
+        else if (mouseXaxis > maxBerdXaxis)
         {
             desiredPosition = new Vector2(maxBerdXaxis, berdYaxis);
         }
@@ -66,14 +81,23 @@ public class BerdMovement : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoother * Time.deltaTime);
     }
+
+    IEnumerator GotHit()
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.red;
+        hit = false;
+        level.GetComponent<FallingSimulator>().speed = 5;
+        
+
+        yield return new WaitForSeconds(1f);
+
+        hit = true;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collided = collision.gameObject;
-
-        if (collided.CompareTag("Branch"))
-        {
-            //get hit
-        }
 
         if (collided.CompareTag("Ground"))
         {
@@ -82,4 +106,22 @@ public class BerdMovement : MonoBehaviour
             anim.SetBool("end", true);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject collided = collision.gameObject;
+
+        if (collided.CompareTag("Branch"))
+        {
+            if (hit)
+            {
+                hp--;
+                StartCoroutine(GotHit());
+            }
+
+            Debug.Log("hitBranch");
+        }
+    }
+
+
 }

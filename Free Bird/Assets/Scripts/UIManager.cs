@@ -9,12 +9,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject pauseCanvas;
     [SerializeField] GameObject endCanvas;
 
+    //To hide
+    [SerializeField] GameObject sections;
+
     bool isPaused;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        sections.SetActive(false);
     }
 
     // Update is called once per frame
@@ -75,6 +78,9 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
+        GameStateManager.Playing(true);
+        Time.timeScale = 1;
+        Cursor.visible = false;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
