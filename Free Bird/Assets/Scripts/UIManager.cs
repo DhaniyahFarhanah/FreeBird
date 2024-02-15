@@ -17,7 +17,9 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameStateManager.SetEnd(false); //IDK WHY THE FUCK IT DOESN'T WORK WITHOUT THIS DUDE
         sections.SetActive(false);
+        StopAllCoroutines();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class UIManager : MonoBehaviour
         }
         else if (GameStateManager.GetEnd())
         {
+            Debug.Log(GameStateManager.GetEnd());
             StartCoroutine(ShowEnd());
         }
 
@@ -62,6 +65,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator ShowEnd()
     {
+        Debug.Log("coroutin started");
         yield return new WaitForSeconds(2f);
         endCanvas.SetActive(true);
     }

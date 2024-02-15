@@ -55,6 +55,8 @@ public class ComboManager : MonoBehaviour
         toShow = true;
         toClick = true;
         skill.SetActive(false);
+        skillLevel = 0;
+
     }
 
     // Update is called once per frame
