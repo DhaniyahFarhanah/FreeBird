@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject startButton;
     [SerializeField] GameObject pauseCanvas;
     [SerializeField] GameObject endCanvas;
+    [SerializeField] AudioSource musicSource;
 
     //To hide
     [SerializeField] GameObject sections;
@@ -51,6 +52,8 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 0;
             Cursor.visible = true;
             GameStateManager.Playing(false);
+            AudioManager.Instance.PlaySFX("Click");
+            AudioManager.Instance.lowerMusic();
         }
 
         else if(isPaused)
@@ -60,6 +63,7 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1;
             pauseCanvas.SetActive(false);
             GameStateManager.Playing(true);
+            AudioManager.Instance.Normalise();
         }
     }
 
@@ -75,6 +79,8 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
         GameStateManager.Playing(true);
         startButton.SetActive(false);
+        AudioManager.Instance.PlaySFX("Click");
+        AudioManager.Instance.PlayMusic("Easy");
     }
 
     public void RestartButton()
@@ -85,7 +91,7 @@ public class UIManager : MonoBehaviour
         GameStateManager.Playing(true);
         Time.timeScale = 1;
         Cursor.visible = false;
-
+        AudioManager.Instance.PlaySFX("Click");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

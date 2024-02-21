@@ -87,6 +87,7 @@ public class BerdMovement : MonoBehaviour
         this.GetComponent<SpriteRenderer>().color = Color.red;
         hit = false;
         level.GetComponent<FallingSimulator>().speed = 5;
+        AudioManager.Instance.PlaySFX("Hurt");
         
 
         yield return new WaitForSeconds(1f);
@@ -104,6 +105,7 @@ public class BerdMovement : MonoBehaviour
             Debug.Log("hitGround");
             GameStateManager.SetEnd(true);
             anim.SetBool("end", true);
+            AudioManager.Instance.PlayMusic("Lose");
         }
     }
 

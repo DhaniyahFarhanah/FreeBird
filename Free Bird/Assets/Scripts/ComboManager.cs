@@ -100,6 +100,7 @@ public class ComboManager : MonoBehaviour
                         {
                             numOfCompletedCombo++;
                             StartCoroutine(WaitForNextCombo());
+                            AudioManager.Instance.PlaySFX("Correct");
                         }
                     }
                     else if (clickedChar != selected) //Not correct character
@@ -109,6 +110,7 @@ public class ComboManager : MonoBehaviour
                         spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
                         spriteChange.image.GetComponent<Image>().color = Color.red;
                         StartCoroutine(WrongCharacter());
+                        AudioManager.Instance.PlaySFX("Wrong");
                     }
                 }
             }
@@ -141,6 +143,7 @@ public class ComboManager : MonoBehaviour
 
     void CharClicked()
     {
+        AudioManager.Instance.PlaySFX("Click");
         if (Input.GetKeyDown(KeyCode.W))
         {
             clickedChar = 'W';
