@@ -19,9 +19,11 @@ public class BerdMovement : MonoBehaviour
     [SerializeField] float minBerdXaxis;    //Left tree border location on X axis
     [SerializeField] float maxBerdXaxis;    //Right tree border location on Y axis
 
-    Animator anim;
+    [SerializeField] Animator anim;
 
     [SerializeField] TMP_Text hpText;
+    [SerializeField] GameObject hpHolder;
+    [SerializeField] SpriteRenderer sprite;
     int hp = 3;
     bool hit;
     [SerializeField] GameObject level;
@@ -29,7 +31,6 @@ public class BerdMovement : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined; //Confines cursor to borders of the screen
-        anim = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -41,7 +42,7 @@ public class BerdMovement : MonoBehaviour
     // Update is called once per frame
     void Update() //for inputs
     {
-        hpText.text = hp + " HP";
+        hpText.text = hp + "hp";
 
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd())  //Playing the game
         {
@@ -84,16 +85,20 @@ public class BerdMovement : MonoBehaviour
 
     IEnumerator GotHit()
     {
-        this.GetComponent<SpriteRenderer>().color = Color.red;
+        sprite.color = Color.red;
         hit = false;
         level.GetComponent<FallingSimulator>().speed = 5;
         AudioManager.Instance.PlaySFX("Hurt");
-        
+        hpHolder.SetActive(true);
 
+        Debug.Log(hit);
         yield return new WaitForSeconds(1f);
 
         hit = true;
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        sprite.color = Color.white;
+
+        yield return new WaitForSeconds(3f);
+        hpHolder.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -123,6 +128,16 @@ public class BerdMovement : MonoBehaviour
 
             Debug.Log("hitBranch");
         }
+
+        if (collided.CompareTag("Enemy"))
+        {
+            if (hit)
+            {
+                hp--;
+                StartCoroutine(GotHit());
+            }
+        }
+
         if (collided.CompareTag("Sensor"))
         {
             Debug.Log("Difficulty Reached");

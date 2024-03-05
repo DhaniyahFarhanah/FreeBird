@@ -7,6 +7,7 @@ TagManager:
   - Branch
   - Ground
   - Sensor
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -50,14 +51,14 @@ TagManager:
   - name: Background2
     uniqueID: 3096177779
     locked: 0
-  - name: Player
-    uniqueID: 567519635
-    locked: 0
   - name: TreeBark
     uniqueID: 1939219717
     locked: 0
   - name: Obstacles
     uniqueID: 3229073919
+    locked: 0
+  - name: Player
+    uniqueID: 567519635
     locked: 0
   - name: Hud
     uniqueID: 3733183233

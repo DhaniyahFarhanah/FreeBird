@@ -274,8 +274,8 @@ public class ComboManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         GenerateNewCombo();
-        ActivateNeededComboHolders();
         DifficultyChecker();
+        ActivateNeededComboHolders();
 
         skill.SetActive(false);
         toShow = true;
