@@ -64,6 +64,14 @@ public class ComboManager : MonoBehaviour
     {
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && toShow && toClick)  //Playing the game
         {
+            if (lengthOfCombo > maxDifficultyInt)
+            {
+                //End game you win!. Probably will check if the bird is not dead lol
+                endScreen.SetActive(true);
+                EmptyCanvas();
+                GameStateManager.Playing(false);
+            }
+
             if (currentCombo.Length != lengthOfCombo) //Generate new combo because of 
             {
                 StartCoroutine(WaitForNextCombo());
@@ -74,10 +82,22 @@ public class ComboManager : MonoBehaviour
                 numOfCompletedCombo = 0;
                 GameStateManager.SetDifficulty(lengthOfCombo + 2);
                 lengthOfCombo = GameStateManager.GetDifficulty();
-                maxComboForLevel = lengthOfCombo;
-                GenerateNewCombo();
-                ActivateNeededComboHolders();
-                DifficultyChecker();
+
+                if (lengthOfCombo > maxDifficultyInt)
+                {
+                    //End game you win!. Probably will check if the bird is not dead lol
+                    StopAllCoroutines();
+                    EmptyCanvas();
+                    endScreen.SetActive(true);
+                    GameStateManager.Playing(false);
+                }
+                else
+                {
+                    DifficultyChecker();
+                    GenerateNewCombo();
+                    ActivateNeededComboHolders();
+
+                }
 
             }
 
@@ -115,13 +135,6 @@ public class ComboManager : MonoBehaviour
                 }
             }
 
-            if(GameStateManager.GetDifficulty() > maxComboForLevel)
-            {
-                //End game you win!. Probably will check if the bird is not dead lol
-                endScreen.SetActive(true);
-                EmptyCanvas();
-                GameStateManager.Playing(false);
-            }                                 
         }
 
         else //not playing the game

@@ -69,7 +69,6 @@ public class UIManager : MonoBehaviour
 
     IEnumerator ShowEnd()
     {
-        Debug.Log("coroutin started");
         yield return new WaitForSeconds(2f);
         endCanvas.SetActive(true);
     }

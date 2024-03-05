@@ -123,6 +123,10 @@ public class BerdMovement : MonoBehaviour
 
             Debug.Log("hitBranch");
         }
+        if (collided.CompareTag("Sensor"))
+        {
+            Debug.Log("Difficulty Reached");
+        }
     }
 
 
