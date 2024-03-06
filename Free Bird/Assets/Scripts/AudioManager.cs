@@ -58,14 +58,4 @@ public class AudioManager : MonoBehaviour
             sfxSource.PlayOneShot(s.clip);
         }
     }
-
-    public void lowerMusic()
-    {
-            musicSource.volume = 0.5f;
-    }
-
-    public void Normalise()
-    {
-        musicSource.volume = 1.0f;
-    }
 }

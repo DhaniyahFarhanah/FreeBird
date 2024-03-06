@@ -110,7 +110,7 @@ public class BerdMovement : MonoBehaviour
             Debug.Log("hitGround");
             GameStateManager.SetEnd(true);
             anim.SetBool("end", true);
-            AudioManager.Instance.PlayMusic("Lose");
+            AudioManager.Instance.PlaySFX("Lose");
         }
     }
 

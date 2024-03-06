@@ -52,8 +52,6 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 0;
             Cursor.visible = true;
             GameStateManager.Playing(false);
-            AudioManager.Instance.PlaySFX("Click");
-            AudioManager.Instance.lowerMusic();
         }
 
         else if(isPaused)
@@ -63,7 +61,7 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1;
             pauseCanvas.SetActive(false);
             GameStateManager.Playing(true);
-            AudioManager.Instance.Normalise();
+            GameStateManager.Playing(true);
         }
     }
 
@@ -84,14 +82,19 @@ public class UIManager : MonoBehaviour
 
     public void RestartButton()
     {
+        AudioManager.Instance.PlaySFX("Click");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
         GameStateManager.Playing(true);
         Time.timeScale = 1;
         Cursor.visible = false;
-        AudioManager.Instance.PlaySFX("Click");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitButton()
+    {
+        Application.Quit();
     }
 
 }
