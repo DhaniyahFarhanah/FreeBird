@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -90,11 +91,17 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        //AudioManager.Instance.resetUI();
     }
 
     public void QuitButton()
     {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
 }

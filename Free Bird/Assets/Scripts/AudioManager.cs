@@ -5,22 +5,28 @@ using System;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    private static AudioManager instance;
+    public static AudioManager Instance { get { return instance; } private set => instance = value; }
 
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
+    private Volume mVolume;
+
     private void Awake()
     {
-        if(Instance == null)
+        if(instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            instance = this;
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
+
+        mVolume = GetComponent<Volume>();
+            
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -57,5 +63,11 @@ public class AudioManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(s.clip);
         }
+    }
+
+    public void resetUI()
+    {
+        mVolume.BGMSlider.value = mVolume.BGMSource.volume;
+        mVolume.SFXSlider.value = mVolume.SFXSource.volume;
     }
 }

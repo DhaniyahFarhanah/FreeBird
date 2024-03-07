@@ -18,8 +18,11 @@ public class Volume : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BGMSlider.value = BGMSource.volume;
-        SFXSlider.value = SFXSource.volume;
+        if(AudioManager.Instance != null)
+        {
+            BGMSlider.value = BGMSource.volume;
+            SFXSlider.value = SFXSource.volume;
+        }
     }
 
     public void increaseBGMVolume()
