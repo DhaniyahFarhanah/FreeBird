@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetEnd(false); //IDK WHY THE FUCK IT DOESN'T WORK WITHOUT THIS DUDE
         sections.SetActive(false);
         StopAllCoroutines();
+        
     }
 
     // Update is called once per frame
@@ -88,6 +89,7 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
         GameStateManager.Playing(true);
+        pauseCanvas.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
