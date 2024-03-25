@@ -103,36 +103,75 @@ public class ComboManager : MonoBehaviour
 
             if(current < lengthOfCombo)
             {
-                if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) ||Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                if (GameStateManager.GetControls()) //false arrow means wasd
                 {
-                    CharClicked();
-                    selected = currentCombo[current];
-
-                    if (clickedChar == selected) //Correct character
+                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow))
                     {
-                        //change sprite to green 
-                        spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
-                        spriteChange.image.GetComponent<Image>().color = Color.green;
+                        CharClickedArrow();
+                        selected = currentCombo[current];
 
-                        current++; //move to next character
-
-                        if(current == lengthOfCombo) //End of combo, move to next
+                        if (clickedChar == selected) //Correct character
                         {
-                            numOfCompletedCombo++;
-                            StartCoroutine(WaitForNextCombo());
-                            AudioManager.Instance.PlaySFX("Correct");
+                            //change sprite to green 
+                            spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                            spriteChange.image.GetComponent<Image>().color = Color.green;
+
+                            current++; //move to next character
+
+                            if (current == lengthOfCombo) //End of combo, move to next
+                            {
+                                numOfCompletedCombo++;
+                                StartCoroutine(WaitForNextCombo());
+                                AudioManager.Instance.PlaySFX("Correct");
+                            }
+                        }
+                        else if (clickedChar != selected) //Not correct character
+                        {
+                            //change sprite to red
+                            skillLevel++;
+                            spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                            spriteChange.image.GetComponent<Image>().color = Color.red;
+                            StartCoroutine(WrongCharacter());
+                            AudioManager.Instance.PlaySFX("Wrong");
                         }
                     }
-                    else if (clickedChar != selected) //Not correct character
+                }
+                else if (!GameStateManager.GetControls())
+                {
+
+                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
                     {
-                        //change sprite to red
-                        skillLevel++;
-                        spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
-                        spriteChange.image.GetComponent<Image>().color = Color.red;
-                        StartCoroutine(WrongCharacter());
-                        AudioManager.Instance.PlaySFX("Wrong");
+                        CharClickedWASD();
+                        selected = currentCombo[current];
+
+                        if (clickedChar == selected) //Correct character
+                        {
+                            //change sprite to green 
+                            spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                            spriteChange.image.GetComponent<Image>().color = Color.green;
+
+                            current++; //move to next character
+
+                            if (current == lengthOfCombo) //End of combo, move to next
+                            {
+                                numOfCompletedCombo++;
+                                StartCoroutine(WaitForNextCombo());
+                                AudioManager.Instance.PlaySFX("Correct");
+                            }
+                        }
+                        else if (clickedChar != selected) //Not correct character
+                        {
+                            //change sprite to red
+                            skillLevel++;
+                            spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
+                            spriteChange.image.GetComponent<Image>().color = Color.red;
+                            StartCoroutine(WrongCharacter());
+                            AudioManager.Instance.PlaySFX("Wrong");
+                        }
                     }
                 }
+
+                
             }
 
         }
@@ -154,7 +193,7 @@ public class ComboManager : MonoBehaviour
         }
     }
 
-    void CharClicked()
+    void CharClickedWASD()
     {
         AudioManager.Instance.PlaySFX("Click");
         if (Input.GetKeyDown(KeyCode.W))
@@ -170,6 +209,26 @@ public class ComboManager : MonoBehaviour
             clickedChar = 'S';
         }
         else if (Input.GetKeyDown(KeyCode.D))
+        {
+            clickedChar = 'D';
+        }
+    }
+    void CharClickedArrow()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            clickedChar = 'W';
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            clickedChar = 'A';
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            clickedChar = 'S';
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             clickedChar = 'D';
         }

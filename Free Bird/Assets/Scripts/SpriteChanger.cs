@@ -12,6 +12,10 @@ public class SpriteChanger : MonoBehaviour
     [SerializeField] Sprite a_normal;
     [SerializeField] Sprite s_normal;
     [SerializeField] Sprite d_normal;
+    [SerializeField] Sprite up_normal;
+    [SerializeField] Sprite left_normal;
+    [SerializeField] Sprite down_normal;
+    [SerializeField] Sprite right_normal;
 
     Image imageHolder;
 
@@ -38,17 +42,46 @@ public class SpriteChanger : MonoBehaviour
     void SetSprite()
     {
         imageHolder.color = Color.white;
-        switch (combo[index])
+        if(GameStateManager.GetControls()) //true means arrow
         {
-            case 'W': imageHolder.sprite = w_normal;
-                break;
-            case 'A': imageHolder.sprite = a_normal;
-                break;
-            case 'S': imageHolder.sprite = s_normal;
-                break;
-            case 'D': imageHolder.sprite = d_normal;
-                break;
+            switch (combo[index])
+            {
+                case 'W':
+                    imageHolder.sprite = up_normal;
+                    break;
+                case 'A':
+                    imageHolder.sprite = left_normal;
+                    break;
+                case 'S':
+                    imageHolder.sprite = down_normal;
+                    break;
+                case 'D':
+                    imageHolder.sprite = right_normal;
+                    break;
 
+            }
         }
+        else if (!GameStateManager.GetControls())
+        {
+            switch (combo[index])
+            {
+                case 'W':
+                    imageHolder.sprite = w_normal;
+                    break;
+                case 'A':
+                    imageHolder.sprite = a_normal;
+                    break;
+                case 'S':
+                    imageHolder.sprite = s_normal;
+                    break;
+                case 'D':
+                    imageHolder.sprite = d_normal;
+                    break;
+
+            }
+        }
+
+    
+        
     }
 }

@@ -29,6 +29,7 @@ public class GameStateManager
     public static bool win = false;
     public static int stage = 2; //2 is easy, 4 is mid, 6 is difficult. 8 is the worst It's the amount of combo pieces per difficulty
     public static string currentCombo = "";
+    public static bool arrows = true;
 
     public static void Playing(bool start)
     {
@@ -68,6 +69,16 @@ public class GameStateManager
     public static string GetCombo()
     {
         return currentCombo;
+    }
+
+    public static void SetControls(bool controls)
+    {
+        arrows = controls;
+    }
+
+    public static bool GetControls()
+    {
+        return arrows;
     }
 
 }
