@@ -16,7 +16,7 @@ public class BgEffectScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd()) //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && !GameStateManager.GetCutscene()) //Playing the game
         {
             transform.position = Vector2.MoveTowards(transform.position, moveTowardsPoint, speedMove * Time.deltaTime);
         }

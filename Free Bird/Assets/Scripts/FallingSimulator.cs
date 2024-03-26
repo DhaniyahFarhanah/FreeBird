@@ -48,7 +48,7 @@ public class FallingSimulator : MonoBehaviour
         MinUI.text = min.ToString();
 
 
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd()) //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && !GameStateManager.GetCutscene()) //Playing the game
         {
             endPoint = new Vector2(transform.position.x, endPointY);
 

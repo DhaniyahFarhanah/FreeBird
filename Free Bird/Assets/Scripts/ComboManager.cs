@@ -62,7 +62,7 @@ public class ComboManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && toShow && toClick)  //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && toShow && toClick && !GameStateManager.GetCutscene())  //Playing the game
         {
             if (lengthOfCombo > maxDifficultyInt)
             {

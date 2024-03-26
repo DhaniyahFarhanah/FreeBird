@@ -19,16 +19,8 @@ public class Volume : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         BGMSlider.value = bgmVolume;
         SFXSlider.value = sfxVolume;
-        Debug.Log("bgmVolume: " + bgmVolume);
-        Debug.Log("sfxVolume: " + sfxVolume);
     }
 
     public void increaseBGMVolume()
@@ -39,6 +31,7 @@ public class Volume : MonoBehaviour
             bgmVolume += 0.1f;
             SetVolumes();
         }
+        BGMSlider.value = bgmVolume;
     }
 
     public void decreaseBGMVolume()
@@ -49,7 +42,8 @@ public class Volume : MonoBehaviour
             bgmVolume -= 0.1f;
             SetVolumes();
         }
-        
+
+        BGMSlider.value = bgmVolume;
     }
 
     public void increaseSFXVolume()
@@ -60,7 +54,7 @@ public class Volume : MonoBehaviour
             sfxVolume += 0.1f;
             SetVolumes();
         }
-        
+        SFXSlider.value = sfxVolume;
     }
 
     public void decreaseSFXVolume()
@@ -71,7 +65,7 @@ public class Volume : MonoBehaviour
             sfxVolume -= 0.1f;
             SetVolumes();
         }
-        
+        SFXSlider.value = sfxVolume;
     }
 
     public void SetVolumes()

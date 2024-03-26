@@ -44,7 +44,7 @@ public class BerdMovement : MonoBehaviour
     {
         hpText.text = hp + "hp";
 
-        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd())  //Playing the game
+        if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && !GameStateManager.GetCutscene())  //Playing the game
         {
             MoveBerdWithMouse();
             
@@ -141,6 +141,12 @@ public class BerdMovement : MonoBehaviour
         if (collided.CompareTag("Sensor"))
         {
             Debug.Log("Difficulty Reached");
+        }
+
+        if (collided.CompareTag("Shrub"))
+        {
+            gameObject.GetComponent<TrailRenderer>().enabled = true;
+            sprite.color = new Color(1, 1, 1, 1);
         }
     }
 

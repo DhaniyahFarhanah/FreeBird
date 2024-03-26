@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Sensor
   - Enemy
+  - Shrub
   layers:
   - Default
   - TransparentFX
@@ -62,4 +63,7 @@ TagManager:
     locked: 0
   - name: Hud
     uniqueID: 3733183233
+    locked: 0
+  - name: Foreground
+    uniqueID: 3205254423
     locked: 0
