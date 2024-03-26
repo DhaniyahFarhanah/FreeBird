@@ -11,8 +11,6 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
-    private Volume mVolume;
-
     private void Awake()
     {
         if(instance == null)
@@ -23,15 +21,23 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        mVolume = GetComponent<Volume>();
             
         DontDestroyOnLoad(gameObject);
+
+        musicSource.volume = GameStateManager.GetBGMVolume();
+        sfxSource.volume = GameStateManager.GetSFXVolume();
+
     }
 
     private void Start()
     {
         PlayMusic("Menu");
+    }
+
+    private void Update()
+    {
+        musicSource.volume = GameStateManager.GetBGMVolume();
+        sfxSource.volume = GameStateManager.GetSFXVolume();
     }
 
     public void PlayMusic(string name)
@@ -63,11 +69,5 @@ public class AudioManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(s.clip);
         }
-    }
-
-    public void resetUI()
-    {
-        mVolume.BGMSlider.value = mVolume.BGMSource.volume;
-        mVolume.SFXSlider.value = mVolume.SFXSource.volume;
     }
 }

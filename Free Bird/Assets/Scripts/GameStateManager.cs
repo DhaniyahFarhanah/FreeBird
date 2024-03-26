@@ -30,6 +30,8 @@ public class GameStateManager
     public static int stage = 2; //2 is easy, 4 is mid, 6 is difficult. 8 is the worst It's the amount of combo pieces per difficulty
     public static string currentCombo = "";
     public static bool arrows = true;
+    public static float BGMvolume = 1.0f;
+    public static float SFXvolume = 1.0f;
 
     public static void Playing(bool start)
     {
@@ -79,6 +81,23 @@ public class GameStateManager
     public static bool GetControls()
     {
         return arrows;
+    }
+
+    //audio stuff
+    public static void SetVolumes(float bgmVolume, float sfxVolume)
+    {
+        BGMvolume = bgmVolume;
+        SFXvolume = sfxVolume;
+    }
+
+    public static float GetBGMVolume()
+    {
+        return BGMvolume;
+    }
+
+    public static float GetSFXVolume()
+    {
+        return SFXvolume;
     }
 
 }
