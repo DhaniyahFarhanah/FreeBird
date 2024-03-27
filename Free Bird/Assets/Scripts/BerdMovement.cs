@@ -137,9 +137,20 @@ public class BerdMovement : MonoBehaviour
             }
         }
 
-        if (collided.CompareTag("Sensor"))
+        if (collided.CompareTag("EasySensor"))
         {
-            Debug.Log("Difficulty Reached");
+            Debug.Log("Easy");
+            GameStateManager.SetSectionCode(1);
+        }
+
+        if (collided.CompareTag("MidSensor"))
+        {
+            GameStateManager.SetSectionCode(2);
+        }
+
+        if (collided.CompareTag("HardSensor"))
+        {
+            GameStateManager.SetSectionCode(3);
         }
 
         if (collided.CompareTag("Shrub"))

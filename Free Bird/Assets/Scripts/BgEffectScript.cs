@@ -6,6 +6,7 @@ public class BgEffectScript : MonoBehaviour
 {
 
     [SerializeField] float speedMove;
+
     [SerializeField] Vector2 moveTowardsPoint;
     // Start is called before the first frame update
     void Start()

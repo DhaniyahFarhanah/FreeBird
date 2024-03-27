@@ -32,6 +32,7 @@ public class GameStateManager
     public static string currentCombo = "";
     public static bool cutscene = true;
     public static bool arrows = true;
+    public static int difficultyArea = 1;
     public static float BGMvolume = 1.0f;
     public static float SFXvolume = 1.0f;
 
@@ -78,6 +79,16 @@ public class GameStateManager
     public static void SetDifficulty(int setdifficulty)
     {
          stage = setdifficulty;
+    }
+
+    public static int GetSectionCode()
+    {
+        return difficultyArea;
+    }
+
+    public static void SetSectionCode(int eep)
+    {
+        difficultyArea = eep;
     }
 
     public static int GetDifficulty()

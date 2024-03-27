@@ -129,6 +129,7 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetCutscene(true);
         GameStateManager.Playing(true);
         GameStateManager.SetWin(false);
+        GameStateManager.SetSectionCode(1);
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = false;

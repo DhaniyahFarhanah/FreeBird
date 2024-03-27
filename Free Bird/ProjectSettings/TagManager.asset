@@ -6,9 +6,11 @@ TagManager:
   tags:
   - Branch
   - Ground
-  - Sensor
   - Enemy
   - Shrub
+  - EasySensor
+  - MidSensor
+  - HardSensor
   layers:
   - Default
   - TransparentFX
