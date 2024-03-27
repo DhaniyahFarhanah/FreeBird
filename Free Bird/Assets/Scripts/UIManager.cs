@@ -10,7 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Animator cutsceneAnim;
     [SerializeField] GameObject controlPanel;
     [SerializeField] GameObject pauseCanvas;
-    [SerializeField] GameObject endCanvas;
+    [SerializeField] GameObject lossCanvas;
+    [SerializeField] GameObject winCanvas;
     [SerializeField] AudioSource musicSource;
 
     [SerializeField] float cutsceneDelay;
@@ -42,10 +43,16 @@ public class UIManager : MonoBehaviour
         {
             Pause();
         }
-        else if (GameStateManager.GetEnd())
+
+        if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //loss
         {
-            Debug.Log(GameStateManager.GetEnd());
             StartCoroutine(ShowEnd());
+            Cursor.visible = true;
+        }
+        else if (GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
+        {
+            winCanvas.SetActive(true);
+            Cursor.visible = true;
         }
 
     }
@@ -58,7 +65,6 @@ public class UIManager : MonoBehaviour
             pauseCanvas.SetActive(true);
             Time.timeScale = 0;
             Cursor.visible = true;
-            GameStateManager.Playing(false);
         }
 
         else if(isPaused)
@@ -67,15 +73,13 @@ public class UIManager : MonoBehaviour
             Cursor.visible = false;
             Time.timeScale = 1;
             pauseCanvas.SetActive(false);
-            GameStateManager.Playing(true);
-            GameStateManager.Playing(true);
         }
     }
 
     IEnumerator ShowEnd()
     {
         yield return new WaitForSeconds(2f);
-        endCanvas.SetActive(true);
+        lossCanvas.SetActive(true);
     }
 
     public void StartButton()
@@ -101,7 +105,6 @@ public class UIManager : MonoBehaviour
 
     public void StartGame()
     {
-        Cursor.visible = false;
         startMenu.SetActive(false);
         StartCoroutine(WaitForCutscene());
     }
@@ -125,12 +128,29 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         GameStateManager.SetCutscene(true);
         GameStateManager.Playing(true);
+        GameStateManager.SetWin(false);
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         //AudioManager.Instance.resetUI();
+    }
+
+    public void MainMenu()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        GameStateManager.SetEnd(false);
+        GameStateManager.SetDifficulty(2);
+        GameStateManager.SetCombo("");
+        startMenu.SetActive(true);
+        GameStateManager.SetCutscene(true);
+        GameStateManager.Playing(false);
+        GameStateManager.SetWin(false);
+        pauseCanvas.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.visible = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitButton()

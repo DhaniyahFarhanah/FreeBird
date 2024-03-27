@@ -26,8 +26,6 @@ public class ComboManager : MonoBehaviour
     [SerializeField] TMP_Text skillDisplay;         //gameobject for 
     int skillLevel = 0;                             //Skill. Each time fail the combo, count up. 0 means perfect
 
-    [SerializeField] GameObject endScreen;
-
     int lengthOfCombo;                              //how long is the combo
     [SerializeField] int current = 0;               //which positionin the combo is selected
     string currentCombo = "";                       //for generating new combo
@@ -64,41 +62,20 @@ public class ComboManager : MonoBehaviour
     {
         if (GameStateManager.GetGameStatus() && !GameStateManager.GetEnd() && toShow && toClick && !GameStateManager.GetCutscene())  //Playing the game
         {
-            if (lengthOfCombo > maxDifficultyInt)
-            {
-                //End game you win!. Probably will check if the bird is not dead lol
-                endScreen.SetActive(true);
-                EmptyCanvas();
-                GameStateManager.Playing(false);
-            }
-
             if (currentCombo.Length != lengthOfCombo) //Generate new combo because of 
             {
                 StartCoroutine(WaitForNextCombo());
             }
 
-            if(numOfCompletedCombo == maxComboForLevel) //move to next difficulty
+            if(numOfCompletedCombo == maxComboForLevel && !GameStateManager.GetWin()) //move to next difficulty
             {
                 numOfCompletedCombo = 0;
                 GameStateManager.SetDifficulty(lengthOfCombo + 2);
                 lengthOfCombo = GameStateManager.GetDifficulty();
 
-                if (lengthOfCombo > maxDifficultyInt)
-                {
-                    //End game you win!. Probably will check if the bird is not dead lol
-                    StopAllCoroutines();
-                    EmptyCanvas();
-                    endScreen.SetActive(true);
-                    GameStateManager.Playing(false);
-                }
-                else
-                {
-                    DifficultyChecker();
-                    GenerateNewCombo();
-                    ActivateNeededComboHolders();
-
-                }
-
+                DifficultyChecker();
+                GenerateNewCombo();
+                ActivateNeededComboHolders();
             }
 
             if(current < lengthOfCombo)
@@ -121,8 +98,18 @@ public class ComboManager : MonoBehaviour
                             if (current == lengthOfCombo) //End of combo, move to next
                             {
                                 numOfCompletedCombo++;
-                                StartCoroutine(WaitForNextCombo());
-                                AudioManager.Instance.PlaySFX("Correct");
+                                if (numOfCompletedCombo == numOfInsaneCombos && GameStateManager.GetDifficulty() == maxDifficultyInt)
+                                {
+                                    Debug.Log("Test Win");
+                                    GameStateManager.SetWin(true);
+                                    GameStateManager.Playing(false);
+                                    GameStateManager.SetEnd(true);
+                                }
+                                else
+                                {
+                                    StartCoroutine(WaitForNextCombo());
+                                    AudioManager.Instance.PlaySFX("Correct");
+                                }
                             }
                         }
                         else if (clickedChar != selected) //Not correct character
@@ -155,8 +142,17 @@ public class ComboManager : MonoBehaviour
                             if (current == lengthOfCombo) //End of combo, move to next
                             {
                                 numOfCompletedCombo++;
-                                StartCoroutine(WaitForNextCombo());
-                                AudioManager.Instance.PlaySFX("Correct");
+                                if (numOfCompletedCombo == numOfInsaneCombos && GameStateManager.GetDifficulty() == maxDifficultyInt)
+                                {
+                                    GameStateManager.SetWin(true);
+                                    GameStateManager.Playing(false);
+                                    GameStateManager.SetEnd(true);
+                                }
+                                else
+                                {
+                                    StartCoroutine(WaitForNextCombo());
+                                    AudioManager.Instance.PlaySFX("Correct");
+                                }
                             }
                         }
                         else if (clickedChar != selected) //Not correct character
@@ -170,10 +166,7 @@ public class ComboManager : MonoBehaviour
                         }
                     }
                 }
-
-                
             }
-
         }
 
         else //not playing the game
@@ -181,7 +174,7 @@ public class ComboManager : MonoBehaviour
 
         }
 
-        if (GameStateManager.GetEnd())
+        if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //lose
         {
             skill.SetActive(true);
             skillDisplay.text = "Dumbass";
@@ -189,7 +182,13 @@ public class ComboManager : MonoBehaviour
             PlayDedAnim();
             StopAllCoroutines();
             Cursor.visible = true;
-
+        }
+        if(GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
+        {
+            StopAllCoroutines();
+            EmptyCanvas();
+            GameStateManager.Playing(false);
+            Cursor.visible = true;
         }
     }
 
@@ -387,3 +386,4 @@ public class ComboManager : MonoBehaviour
     }
     
 }
+

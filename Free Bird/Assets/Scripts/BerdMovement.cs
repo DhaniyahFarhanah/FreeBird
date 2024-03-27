@@ -91,7 +91,6 @@ public class BerdMovement : MonoBehaviour
         AudioManager.Instance.PlaySFX("Hurt");
         hpHolder.SetActive(true);
 
-        Debug.Log(hit);
         yield return new WaitForSeconds(1f);
 
         hit = true;
