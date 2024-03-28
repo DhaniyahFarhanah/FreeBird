@@ -12,6 +12,7 @@ public class SectionHandler : MonoBehaviour
     [SerializeField] Vector2 midSpawn;
     [SerializeField] Vector2 hardSpawn;
 
+    float timer = 0;
     int current = 1;
     // Start is called before the first frame update
     void Start()
@@ -22,8 +23,14 @@ public class SectionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameStateManager.GetGameStatus())
+        {
+            timer += Time.deltaTime;
+        }
+        
         if(current != GameStateManager.GetSectionCode())
         {
+            Debug.Log("Section " + GameStateManager.GetSectionCode() + " Time Taken: " + timer);
             current = GameStateManager.GetSectionCode();
             ChangeBG(current);
         }

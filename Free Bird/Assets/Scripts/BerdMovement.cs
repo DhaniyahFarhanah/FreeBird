@@ -139,16 +139,10 @@ public class BerdMovement : MonoBehaviour
 
         if (collided.CompareTag("EasySensor"))
         {
-            Debug.Log("Easy");
-            GameStateManager.SetSectionCode(1);
-        }
-
-        if (collided.CompareTag("MidSensor"))
-        {
             GameStateManager.SetSectionCode(2);
         }
 
-        if (collided.CompareTag("HardSensor"))
+        if (collided.CompareTag("MidSensor"))
         {
             GameStateManager.SetSectionCode(3);
         }
