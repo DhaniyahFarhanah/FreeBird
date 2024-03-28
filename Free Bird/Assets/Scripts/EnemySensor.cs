@@ -24,6 +24,7 @@ public class EnemySensor : MonoBehaviour
         if (collided.CompareTag("Player"))
         {
             animator.SetTrigger("Attack");
+            AudioManager.Instance.PlaySnake("Strike");
         }
     }
 }

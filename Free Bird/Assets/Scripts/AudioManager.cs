@@ -8,8 +8,8 @@ public class AudioManager : MonoBehaviour
     private static AudioManager instance;
     public static AudioManager Instance { get { return instance; } private set => instance = value; }
 
-    public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
+    public Sound[] musicSounds, sfxSounds, snakeSounds;
+    public AudioSource musicSource, sfxSource, snakeSource;
 
     private Volume mVolume;
 
@@ -62,6 +62,22 @@ public class AudioManager : MonoBehaviour
         else
         {
             sfxSource.PlayOneShot(s.clip);
+        }
+    }
+
+    public void PlaySnake(string name)
+    {
+        Sound s = Array.Find(snakeSounds, x => x.name == name);
+
+        if (s == null)
+        {
+            Debug.Log("Sound Not Found!");
+        }
+
+        else
+        {
+            snakeSource.Stop();
+            snakeSource.PlayOneShot(s.clip);
         }
     }
 

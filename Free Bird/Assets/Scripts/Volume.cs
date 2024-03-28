@@ -8,6 +8,7 @@ public class Volume : MonoBehaviour
     public AudioSource BGMSource, SFXSource;
     public Slider BGMSlider, SFXSlider;
     public AudioSource WarningSource1, WarningSource2, WarningSource3;
+    public AudioSource SnakeSource;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +45,7 @@ public class Volume : MonoBehaviour
         WarningSource1.volume += 0.1f;
         WarningSource2.volume += 0.1f;
         WarningSource3.volume += 0.1f;
+        SnakeSource.volume += 0.1f;
     }
 
     public void decreaseSFXVolume()
@@ -53,5 +55,6 @@ public class Volume : MonoBehaviour
         WarningSource1.volume -= 0.1f;
         WarningSource2.volume -= 0.1f;
         WarningSource3.volume -= 0.1f;
+        SnakeSource.volume -= 0.1f;
     }
 }
