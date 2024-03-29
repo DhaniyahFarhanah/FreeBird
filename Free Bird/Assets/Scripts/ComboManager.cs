@@ -24,8 +24,11 @@ public class ComboManager : MonoBehaviour
 
     [Header("Skill Display")]
 
-    [SerializeField] GameObject skill;              //gameobject that holds skill. Mainly for animation stuff
-    [SerializeField] TMP_Text skillDisplay;         //gameobject for 
+    [SerializeField] GameObject perfect;
+    [SerializeField] GameObject good;
+    [SerializeField] GameObject bad;
+    [SerializeField] GameObject death;
+
     int skillLevel = 0;                             //Skill. Each time fail the combo, count up. 0 means perfect
 
     int lengthOfCombo;                              //how long is the combo
@@ -65,9 +68,12 @@ public class ComboManager : MonoBehaviour
         maxComboForLevel = lengthOfCombo;
         toShow = true;
         toClick = true;
-        skill.SetActive(false);
         skillLevel = 0;
         totalNumOfKeys = numOfEasyCombos * 2 + numOfMidCombos * 4 + numOfHardCombos * 6 + numOfInsaneCombos * 8;
+        perfect.SetActive(false);
+        good.SetActive(false);
+        bad.SetActive(false);
+        death.SetActive(false);
     }
 
     // Update is called once per frame
@@ -200,9 +206,6 @@ public class ComboManager : MonoBehaviour
 
         if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //lose
         {
-            skill.SetActive(true);
-            skillDisplay.text = "Dumbass";
-            skillDisplay.color = Color.white;
             PlayDedAnim();
             StopAllCoroutines();
             Cursor.visible = true;
@@ -274,7 +277,11 @@ public class ComboManager : MonoBehaviour
 
     void GenerateNewCombo()
     {
-        skill.SetActive(false);
+        perfect.SetActive(false);
+        good.SetActive(false);
+        bad.SetActive(false);
+        death.SetActive(false);
+
         skillLevel = 1;
         currentCombo = ""; //clear previous combo
         current = 0;
@@ -340,7 +347,12 @@ public class ComboManager : MonoBehaviour
             }
         }
 
-        skill.GetComponent<Animator>().SetBool("end", true);
+        perfect.SetActive(false);
+        good.SetActive(false);
+        bad.SetActive(false);
+        death.SetActive(true);
+
+        death.GetComponent<Animator>().SetBool("end", true);
     }
 
     IEnumerator WaitForNextCombo()
@@ -351,7 +363,6 @@ public class ComboManager : MonoBehaviour
 
         EmptyCanvas();
         SkillDisplay();
-        skill.SetActive(true);
         ResetComboToWhite();
 
         yield return new WaitForSeconds(delay);
@@ -360,7 +371,6 @@ public class ComboManager : MonoBehaviour
         DifficultyChecker();
         ActivateNeededComboHolders();
 
-        skill.SetActive(false);
         toShow = true;
     }
 
@@ -389,23 +399,31 @@ public class ComboManager : MonoBehaviour
     {
         if(skillLevel == 1)
         {
-            skillDisplay.text = "Perfect!!";
-            skillDisplay.color = Color.magenta;
+            perfect.SetActive(true);
+            good.SetActive(false);
+            bad.SetActive(false);
+            death.SetActive(false);
         }
         else if(skillLevel > 1 && skillLevel < 4)
         {
-            skillDisplay.text = "Good!";
-            skillDisplay.color = Color.green;
+            perfect.SetActive(false);
+            good.SetActive(true);
+            bad.SetActive(false);
+            death.SetActive(false);
         }
         else if (skillLevel >= 4)
         {
-            skillDisplay.text = "Skill Issue";
-            skillDisplay.color = Color.red;
+            perfect.SetActive(false);
+            good.SetActive(false);
+            bad.SetActive(true);
+            death.SetActive(false);
         }
         else
         {
-            skillDisplay.text = "";
-            skillDisplay.color = Color.white;
+            perfect.SetActive(false);
+            good.SetActive(false);
+            bad.SetActive(false);
+            death.SetActive(false);
         }
         
     }
