@@ -38,7 +38,7 @@ public class FallingSimulator : MonoBehaviour
 
         distanceIndicator.text = (int)distancetoDeath + " feet";
 
-        if(distancetoDeath < 2500)
+        if(distancetoDeath < 500)
         {
             distanceIndicator.color = Color.red;
             feet.GetComponent<Animator>().SetTrigger("Close");
