@@ -23,7 +23,9 @@ public class BerdMovement : MonoBehaviour
 
     [SerializeField] TMP_Text hpText;
     [SerializeField] GameObject hpHolder;
+    [SerializeField] GameObject hud;
     [SerializeField] SpriteRenderer sprite;
+
     int hp = 3;
     bool hit;
     [SerializeField] GameObject level;
@@ -151,6 +153,7 @@ public class BerdMovement : MonoBehaviour
         {
             gameObject.GetComponent<TrailRenderer>().enabled = true;
             sprite.color = new Color(1, 1, 1, 1);
+            hud.SetActive(true);
         }
     }
 

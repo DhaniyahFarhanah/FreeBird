@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.InteropServices;
 using System.Threading;
 using TMPro;
@@ -22,6 +23,7 @@ public class ComboManager : MonoBehaviour
     int maxComboForLevel;
 
     [Header("Skill Display")]
+
     [SerializeField] GameObject skill;              //gameobject that holds skill. Mainly for animation stuff
     [SerializeField] TMP_Text skillDisplay;         //gameobject for 
     int skillLevel = 0;                             //Skill. Each time fail the combo, count up. 0 means perfect
@@ -33,8 +35,19 @@ public class ComboManager : MonoBehaviour
     char selected;                                  //index of which is selected
     bool toShow;                                    //check to display the combo images
     bool toClick;                                   //checks if the combo will record the clicks if wrong
-
     [SerializeField] float delay;
+
+    [Header("Flight Bar Stuff")]
+
+    [SerializeField] Image flightBarBarlol;
+    [SerializeField] GameObject rightWing;
+    [SerializeField] GameObject leftWing;
+    [SerializeField] float lerpSpeed;
+
+    int startedKeys = 0;
+    int currentKeyShowcase = 0;
+    int totalNumOfKeys = 0;
+    float toBeFilledAmt = 0f;
 
     int numOfCompletedCombo;
 
@@ -54,7 +67,7 @@ public class ComboManager : MonoBehaviour
         toClick = true;
         skill.SetActive(false);
         skillLevel = 0;
-
+        totalNumOfKeys = numOfEasyCombos * 2 + numOfMidCombos * 4 + numOfHardCombos * 6 + numOfInsaneCombos * 8;
     }
 
     // Update is called once per frame
@@ -92,6 +105,7 @@ public class ComboManager : MonoBehaviour
                             //change sprite to green 
                             spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
                             spriteChange.image.GetComponent<Image>().color = Color.green;
+                            currentKeyShowcase++;
 
                             current++; //move to next character
 
@@ -100,7 +114,6 @@ public class ComboManager : MonoBehaviour
                                 numOfCompletedCombo++;
                                 if (numOfCompletedCombo == numOfInsaneCombos && GameStateManager.GetDifficulty() == maxDifficultyInt)
                                 {
-                                    Debug.Log("Test Win");
                                     GameStateManager.SetWin(true);
                                     GameStateManager.Playing(false);
                                     GameStateManager.SetEnd(true);
@@ -120,6 +133,7 @@ public class ComboManager : MonoBehaviour
                             spriteChange.image.GetComponent<Image>().color = Color.red;
                             StartCoroutine(WrongCharacter());
                             AudioManager.Instance.PlaySFX("Wrong");
+                            currentKeyShowcase = startedKeys;
                         }
                     }
                 }
@@ -136,6 +150,7 @@ public class ComboManager : MonoBehaviour
                             //change sprite to green 
                             spriteChange = comboHolders[current].GetComponent<SpriteChanger>();
                             spriteChange.image.GetComponent<Image>().color = Color.green;
+                            currentKeyShowcase++;
 
                             current++; //move to next character
 
@@ -163,15 +178,24 @@ public class ComboManager : MonoBehaviour
                             spriteChange.image.GetComponent<Image>().color = Color.red;
                             StartCoroutine(WrongCharacter());
                             AudioManager.Instance.PlaySFX("Wrong");
+                            currentKeyShowcase = startedKeys;
                         }
                     }
                 }
-            }
+            }   
         }
 
         else //not playing the game
         {
 
+        }
+
+        toBeFilledAmt = currentKeyShowcase / (totalNumOfKeys * 1.0f);
+
+        if (flightBarBarlol.fillAmount != toBeFilledAmt)
+        {
+            //lerp the bar?
+            flightBarBarlol.fillAmount = Mathf.Lerp(flightBarBarlol.fillAmount, toBeFilledAmt, Time.deltaTime * lerpSpeed);
         }
 
         if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //lose
@@ -254,6 +278,7 @@ public class ComboManager : MonoBehaviour
         skillLevel = 1;
         currentCombo = ""; //clear previous combo
         current = 0;
+        startedKeys = currentKeyShowcase;
 
         for (int i = 0; i < lengthOfCombo; i++)
         {
@@ -384,6 +409,6 @@ public class ComboManager : MonoBehaviour
         }
         
     }
-    
+
 }
 
