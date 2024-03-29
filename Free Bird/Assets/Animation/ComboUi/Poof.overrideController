@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Poof
+  m_Controller: {fileID: 9100000, guid: b946fad1885fe42458201a7b7f3ebd1e, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: fc8cdb5f3d30f054eb4ff5f7c229e278, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d3ac6748832f67f4bbb3e4d7ce29bb2b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f0fc8acadbd0e2749bede91004610cf6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 165a1e139dd1b974b9b4797e8a42df63, type: 2}

@@ -24,9 +24,13 @@ public class BerdMovement : MonoBehaviour
     [SerializeField] TMP_Text hpText;
     [SerializeField] GameObject hpHolder;
     [SerializeField] GameObject hud;
+    [SerializeField] Animator featherAnim;
+    [SerializeField] GameObject poof;
     [SerializeField] SpriteRenderer sprite;
 
-    int hp = 3;
+    bool playOnce = false;
+
+    [SerializeField] int hp;
     bool hit;
     [SerializeField] GameObject level;
 
@@ -59,7 +63,15 @@ public class BerdMovement : MonoBehaviour
         if(hp == 0) //death
         {
             GameStateManager.SetEnd(true);
-            anim.SetBool("end", true);
+
+            if(!playOnce)
+            {
+                poof.GetComponent<Animator>().SetTrigger("Hit");
+                sprite.color = new Color(1, 1, 1, 0);
+                playOnce = true;
+            }
+            
+            
         }
     }
 
@@ -92,14 +104,21 @@ public class BerdMovement : MonoBehaviour
         level.GetComponent<FallingSimulator>().speed = 5;
         AudioManager.Instance.PlaySFX("Hurt");
         hpHolder.SetActive(true);
+        poof.SetActive(true);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         hit = true;
         sprite.color = Color.white;
 
+        if (hp == 0)
+        {
+            sprite.color = new Color(1, 1, 1, 0);
+        }
+
         yield return new WaitForSeconds(3f);
         hpHolder.SetActive(false);
+        poof.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -124,6 +143,8 @@ public class BerdMovement : MonoBehaviour
             if (hit)
             {
                 hp--;
+                featherAnim.SetTrigger("Hit");
+                poof.GetComponent<Animator>().SetTrigger("Hit");
                 StartCoroutine(GotHit());
             }
 
@@ -135,6 +156,8 @@ public class BerdMovement : MonoBehaviour
             if (hit)
             {
                 hp--;
+                featherAnim.SetTrigger("Hit");
+                poof.GetComponent<Animator>().SetTrigger("Hit");
                 StartCoroutine(GotHit());
             }
         }
