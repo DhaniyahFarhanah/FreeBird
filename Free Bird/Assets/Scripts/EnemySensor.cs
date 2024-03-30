@@ -21,9 +21,16 @@ public class EnemySensor : MonoBehaviour
     {
         GameObject collided = collision.gameObject;
 
-        if (collided.CompareTag("Player"))
+        if(collided.CompareTag("Player") && gameObject.CompareTag("Snake"))
         {
             animator.SetTrigger("Attack");
+            AudioManager.Instance.PlaySnake("Strike");
+        }
+
+        if (collided.CompareTag("Player") && gameObject.CompareTag("Raccoon"))
+        {
+            animator.SetTrigger("Attack");
+            AudioManager.Instance.PlayRaccoon("Strike");
         }
     }
 }

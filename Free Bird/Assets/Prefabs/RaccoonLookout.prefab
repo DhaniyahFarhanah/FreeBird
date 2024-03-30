@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2026945235483619944}
   - component: {fileID: 4274644501372271962}
   - component: {fileID: 3518798663598359677}
+  - component: {fileID: 3100392847394204598}
   m_Layer: 0
   m_Name: RaccoonLookout
-  m_TagString: Untagged
+  m_TagString: Lookout
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,3 +167,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 38.819374, y: 3.220988}
   m_EdgeRadius: 0
+--- !u!114 &3100392847394204598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5583757073529772185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc21509f4f46975449c3450913651aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

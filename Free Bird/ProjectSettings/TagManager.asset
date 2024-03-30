@@ -11,6 +11,12 @@ TagManager:
   - EasySensor
   - MidSensor
   - HardSensor
+  - Tail
+  - Lookout
+  - Snake
+  - Raccoon
+  - Entrance
+  - Exit
   layers:
   - Default
   - TransparentFX

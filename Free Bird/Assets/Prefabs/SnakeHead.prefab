@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 240522198146308471}
   m_Layer: 0
   m_Name: Sensor
-  m_TagString: Untagged
+  m_TagString: Snake
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -242,7 +242,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1065893377
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -344693118, guid: 9de53076f03cd7f4d9daa27b4395b97e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

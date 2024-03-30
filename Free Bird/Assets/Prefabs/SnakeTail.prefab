@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6949034980076183660}
   - component: {fileID: 1120548332723329328}
   - component: {fileID: 7541459746907721682}
+  - component: {fileID: 5398347277728889331}
   m_Layer: 0
   m_Name: SnakeTail
-  m_TagString: Untagged
+  m_TagString: Tail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,3 +153,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 17.3909, y: 1.3666992}
   m_EdgeRadius: 0
+--- !u!114 &5398347277728889331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2783211157767378568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc21509f4f46975449c3450913651aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
