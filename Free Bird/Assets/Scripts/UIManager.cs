@@ -122,6 +122,8 @@ public class UIManager : MonoBehaviour
     public void RestartButton()
     {
         AudioManager.Instance.PlaySFX("Click");
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.PlayMusic("Menu");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
@@ -141,6 +143,8 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         AudioManager.Instance.PlaySFX("Click");
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.PlayMusic("Menu");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");

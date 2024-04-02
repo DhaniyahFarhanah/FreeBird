@@ -12,6 +12,7 @@ public class ComboManager : MonoBehaviour
 {
     [SerializeField] GameObject[] comboHolders;     //gameobject of each combo piece
     SpriteChanger spriteChange;
+    [SerializeField] Animator playerAnim;
 
     [Header("Combo Info")]
 
@@ -218,6 +219,8 @@ public class ComboManager : MonoBehaviour
             StopAllCoroutines();
             EmptyCanvas();
             GameStateManager.Playing(false);
+            playerAnim.SetBool("end", true);
+            playerAnim.SetBool("lose", false);
             Cursor.visible = true;
         }
     }
