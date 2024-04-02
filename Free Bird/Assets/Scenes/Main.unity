@@ -23080,10 +23080,10 @@ MonoBehaviour:
   - {fileID: 1635600022}
   - {fileID: 1035414569}
   playerAnim: {fileID: 1250759345}
-  numOfEasyCombos: 0
-  numOfMidCombos: 0
-  numOfHardCombos: 0
-  numOfInsaneCombos: 2
+  numOfEasyCombos: 8
+  numOfMidCombos: 7
+  numOfHardCombos: 7
+  numOfInsaneCombos: 3
   maxDifficultyInt: 8
   perfect: {fileID: 1374663364}
   good: {fileID: 1247028342}
