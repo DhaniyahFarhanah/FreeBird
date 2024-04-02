@@ -129,10 +129,11 @@ public class BerdMovement : MonoBehaviour
 
         if (collided.CompareTag("Ground"))
         {
+            AudioManager.Instance.Normalize();
+            AudioManager.Instance.PlaySFX("Lose");
             Debug.Log("hitGround");
             GameStateManager.SetEnd(true);
             anim.SetBool("end", true);
-            AudioManager.Instance.PlaySFX("Lose");
         }
     }
 
