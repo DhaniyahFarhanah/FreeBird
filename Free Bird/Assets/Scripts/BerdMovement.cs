@@ -63,6 +63,7 @@ public class BerdMovement : MonoBehaviour
         if(hp == 0) //death
         {
             AudioManager.Instance.Normalize();
+            AudioManager.Instance.PlaySFX("Lose");
             GameStateManager.SetEnd(true);
 
             if(!playOnce)

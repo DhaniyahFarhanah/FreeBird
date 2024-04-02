@@ -16,7 +16,8 @@ TagManager:
   - Snake
   - Raccoon
   - Entrance
-  - Exit
+  - EasyExit
+  - MediumExit
   layers:
   - Default
   - TransparentFX

@@ -212,6 +212,9 @@ public class ComboManager : MonoBehaviour
         }
         if(GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
         {
+            AudioManager.Instance.Normalize();
+            AudioManager.Instance.StopMusic();
+            AudioManager.Instance.PlaySFX("Win");
             StopAllCoroutines();
             EmptyCanvas();
             GameStateManager.Playing(false);

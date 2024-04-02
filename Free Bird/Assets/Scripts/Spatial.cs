@@ -11,9 +11,30 @@ public class Spatial : MonoBehaviour
             AudioManager.Instance.Muffle();
         }
 
-        if (gameObject.CompareTag("Exit"))
+        if (gameObject.CompareTag("EasyExit"))
         {
             AudioManager.Instance.Normalize();
+            AudioManager.Instance.Transition();
+            StartCoroutine(DelayThenMedium());
         }
+
+        if(gameObject.CompareTag("MediumExit"))
+        {
+            AudioManager.Instance.Normalize();
+            AudioManager.Instance.Transition();
+            StartCoroutine(DelayThenHard());
+        }
+    }
+
+    private IEnumerator DelayThenMedium()
+    {
+        yield return new WaitForSeconds(2f);
+        AudioManager.Instance.PlayMusic("Medium");
+    }
+
+    private IEnumerator DelayThenHard()
+    {
+        yield return new WaitForSeconds(2f);
+        AudioManager.Instance.PlayMusic("Hard");
     }
 }

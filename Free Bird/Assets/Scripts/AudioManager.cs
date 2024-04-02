@@ -43,10 +43,15 @@ public class AudioManager : MonoBehaviour
         sfxSource.volume = GameStateManager.GetSFXVolume();
     }
 
+    public void StopMusic()
+    {
+        musicSource.Stop();
+    }
+
     public void PlayMusic(string name)
     {
         Sound s = Array.Find(musicSounds, x => x.name == name);
-        
+
         if (s == null)
         {
             Debug.Log("Sound Not Found!");
@@ -61,7 +66,7 @@ public class AudioManager : MonoBehaviour
 
     public void Muffle()
     {
-        filter.cutoffFrequency = 5500; //Muffle
+        filter.cutoffFrequency = 2500; //Muffle
     }
 
     public void Normalize()
@@ -113,5 +118,34 @@ public class AudioManager : MonoBehaviour
         {
             raccoonSource.PlayOneShot(s.clip);
         }
+    }
+
+    public void Transition()
+    {
+        StartCoroutine(FadeOutAndIn());
+    }
+
+    IEnumerator FadeOutAndIn()
+    {
+        //Fade out in 1 second(s)
+        float initialVolume = musicSource.volume;
+        float time = 0f;
+        while (time < 1.0f)
+        {
+            time += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(initialVolume, 0f, time / 1);
+            yield return null;
+        }
+        musicSource.volume = 0f;
+
+        // then, Fade in in 1 second(s)
+        time = 0f;
+        while (time < 1)
+        {
+            time += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(0f, initialVolume, time / 1);
+            yield return null;
+        }
+        musicSource.volume = initialVolume;
     }
 }
