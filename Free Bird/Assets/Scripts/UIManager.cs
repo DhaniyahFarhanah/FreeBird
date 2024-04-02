@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject winCanvas;
     [SerializeField] AudioSource musicSource;
     [SerializeField] GameObject hud;
+    [SerializeField] GameObject transition;
 
     //Leaderboard
     [SerializeField] TMP_Text perfComboAmt;
@@ -50,6 +51,7 @@ public class UIManager : MonoBehaviour
         {
             StartGame();
             startMenu.SetActive(false);
+            transition.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && !GameStateManager.GetEnd())
@@ -121,6 +123,13 @@ public class UIManager : MonoBehaviour
         lossCanvas.SetActive(true);
     }
 
+    IEnumerator MainMenuTran()
+    {
+        transition.GetComponent<Animator>().SetTrigger("Tran");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void StartButton()
     {
         //show the controls choice
@@ -187,14 +196,13 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
-        startMenu.SetActive(true);
         GameStateManager.SetCutscene(true);
         GameStateManager.Playing(false);
         GameStateManager.SetWin(false);
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
-        Cursor.visible = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Cursor.visible = true;
+        StartCoroutine(MainMenuTran());
     }
 
     public void QuitButton()
