@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour
 
     public void Muffle()
     {
-        filter.cutoffFrequency = 500; //Muffle
+        filter.cutoffFrequency = 5500; //Muffle
     }
 
     public void Normalize()

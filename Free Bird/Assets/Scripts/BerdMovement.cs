@@ -62,6 +62,7 @@ public class BerdMovement : MonoBehaviour
         }
         if(hp == 0) //death
         {
+            AudioManager.Instance.Normalize();
             GameStateManager.SetEnd(true);
 
             if(!playOnce)
