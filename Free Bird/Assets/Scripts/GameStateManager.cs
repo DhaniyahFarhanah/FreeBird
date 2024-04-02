@@ -36,6 +36,10 @@ public class GameStateManager
     public static float BGMvolume = 1.0f;
     public static float SFXvolume = 1.0f;
 
+    public static int perfect = 0;
+    public static int good = 0;
+    public static int bad = 0;
+
     public static void Playing(bool start)
     {
         gameStart = start;
@@ -131,6 +135,37 @@ public class GameStateManager
     public static float GetSFXVolume()
     {
         return SFXvolume;
+    }
+
+    //leaderboard stuff
+    public static int GetPerfCombo()
+    {
+        return perfect;
+    }
+
+    public static void SetPerfCombo(int perf)
+    {
+        perfect = perf;
+    }
+
+    public static int GetGoodCombo()
+    {
+        return good;
+    }
+
+    public static void SetGoodCombo(int gd)
+    {
+        good = gd;
+    }
+
+    public static int GetBadCombo()
+    {
+        return bad;
+    }
+
+    public static void SetBadCombo(int bd)
+    {
+        bad = bd;
     }
 
 }

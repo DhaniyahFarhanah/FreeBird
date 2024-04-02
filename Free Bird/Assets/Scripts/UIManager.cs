@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,8 +15,19 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject lossCanvas;
     [SerializeField] GameObject winCanvas;
     [SerializeField] AudioSource musicSource;
+    [SerializeField] GameObject hud;
+
+    //Leaderboard
+    [SerializeField] TMP_Text perfComboAmt;
+    [SerializeField] TMP_Text goodComboAmt;
+    [SerializeField] TMP_Text badComboAmt;
+    [SerializeField] Image endCutsceneImg;
+    [SerializeField] Sprite secretEnd;
+    [SerializeField] Sprite normEnd;
+    [SerializeField] TMP_Text endQuote;
 
     [SerializeField] float cutsceneDelay;
+    [SerializeField] float endCutsceneDelay;
 
     //To hide
     [SerializeField] GameObject sections;
@@ -46,13 +59,33 @@ public class UIManager : MonoBehaviour
 
         if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //loss
         {
+            AudioManager.Instance.Normalize();
+            AudioManager.Instance.PlaySFX("Lose");
             StartCoroutine(ShowEnd());
             Cursor.visible = true;
         }
         else if (GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
         {
+            hud.SetActive(false);
+            StartCoroutine(EndCutscene());
             winCanvas.SetActive(true);
+            perfComboAmt.text = GameStateManager.GetPerfCombo().ToString();
+            goodComboAmt.text = GameStateManager.GetGoodCombo().ToString();
+            badComboAmt.text = GameStateManager.GetBadCombo().ToString();
+
+            if(GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0)
+            {
+                endCutsceneImg.sprite = secretEnd;
+                endQuote.text = "\"" + "S-son...?" + "\"";
+            }
+            else
+            {
+                endCutsceneImg.sprite = normEnd;
+                endQuote.text = "\"" + "Fly high...free bird..." + "\"";
+            }
+
             Cursor.visible = true;
+
         }
 
     }
@@ -74,6 +107,12 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1;
             pauseCanvas.SetActive(false);
         }
+    }
+
+    IEnumerator EndCutscene()
+    {
+        yield return new WaitForSeconds(endCutsceneDelay);
+        MainMenu();
     }
 
     IEnumerator ShowEnd()

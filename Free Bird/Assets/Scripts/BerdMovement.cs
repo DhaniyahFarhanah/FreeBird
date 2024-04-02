@@ -62,8 +62,6 @@ public class BerdMovement : MonoBehaviour
         }
         if(hp == 0) //death
         {
-            AudioManager.Instance.Normalize();
-            AudioManager.Instance.PlaySFX("Lose");
             GameStateManager.SetEnd(true);
 
             if(!playOnce)
@@ -129,8 +127,6 @@ public class BerdMovement : MonoBehaviour
 
         if (collided.CompareTag("Ground"))
         {
-            AudioManager.Instance.Normalize();
-            AudioManager.Instance.PlaySFX("Lose");
             Debug.Log("hitGround");
             GameStateManager.SetEnd(true);
             anim.SetBool("end", true);

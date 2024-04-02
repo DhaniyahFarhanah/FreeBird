@@ -53,6 +53,10 @@ public class ComboManager : MonoBehaviour
     int totalNumOfKeys = 0;
     float toBeFilledAmt = 0f;
 
+    int perfCombos = 0;
+    int goodCombos = 0;
+    int badCombos = 0;
+
     int numOfCompletedCombo;
 
     Dictionary<char, KeyCode> comboButtons = new Dictionary<char, KeyCode>();
@@ -166,6 +170,7 @@ public class ComboManager : MonoBehaviour
                                 numOfCompletedCombo++;
                                 if (numOfCompletedCombo == numOfInsaneCombos && GameStateManager.GetDifficulty() == maxDifficultyInt)
                                 {
+                                    SkillDisplay();
                                     GameStateManager.SetWin(true);
                                     GameStateManager.Playing(false);
                                     GameStateManager.SetEnd(true);
@@ -213,6 +218,9 @@ public class ComboManager : MonoBehaviour
         }
         if(GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
         {
+            GameStateManager.SetPerfCombo(perfCombos);
+            GameStateManager.SetGoodCombo(goodCombos);
+            GameStateManager.SetBadCombo(badCombos);
             AudioManager.Instance.Normalize();
             AudioManager.Instance.StopMusic();
             AudioManager.Instance.PlaySFX("Win");
@@ -409,6 +417,7 @@ public class ComboManager : MonoBehaviour
             good.SetActive(false);
             bad.SetActive(false);
             death.SetActive(false);
+            perfCombos++;
         }
         else if(skillLevel > 1 && skillLevel < 4)
         {
@@ -416,6 +425,7 @@ public class ComboManager : MonoBehaviour
             good.SetActive(true);
             bad.SetActive(false);
             death.SetActive(false);
+            goodCombos++;
         }
         else if (skillLevel >= 4)
         {
@@ -423,6 +433,7 @@ public class ComboManager : MonoBehaviour
             good.SetActive(false);
             bad.SetActive(true);
             death.SetActive(false);
+            badCombos++;
         }
         else
         {
