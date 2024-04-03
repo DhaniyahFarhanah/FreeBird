@@ -127,23 +127,23 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FadeOutAndIn()
     {
-        //Fade out in 1 second(s)
+        //Fade out in 3 second(s)
         float initialVolume = musicSource.volume;
         float time = 0f;
-        while (time < 1.0f)
+        while (time < 3.0f)
         {
             time += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(initialVolume, 0f, time / 1);
+            musicSource.volume = Mathf.Lerp(initialVolume, 0f, time / 3.0f);
             yield return null;
         }
-        musicSource.volume = 0f;
+        //musicSource.volume = 0f;
 
-        // then, Fade in in 1 second(s)
+        // then, Fade in in 2 second(s)
         time = 0f;
-        while (time < 1)
+        while (time < 2.0)
         {
             time += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0f, initialVolume, time / 1);
+            musicSource.volume = Mathf.Lerp(0f, initialVolume, time / 2.0f);
             yield return null;
         }
         musicSource.volume = initialVolume;

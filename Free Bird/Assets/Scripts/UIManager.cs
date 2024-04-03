@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] AudioSource musicSource;
     [SerializeField] GameObject hud;
     [SerializeField] GameObject transition;
+    [SerializeField] AudioSource sfxSource;
 
     //Leaderboard
     [SerializeField] TMP_Text perfComboAmt;
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] float cutsceneDelay;
     [SerializeField] float endCutsceneDelay;
+    private bool gameWon = false;
 
     //To hide
     [SerializeField] GameObject sections;
@@ -68,6 +70,15 @@ public class UIManager : MonoBehaviour
         }
         else if (GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
         {
+            if (gameWon == false)
+            {
+                AudioManager.Instance.Normalize();
+                AudioManager.Instance.StopMusic();
+                AudioManager.Instance.PlaySFX("Win");
+                StartCoroutine(Delay());
+                gameWon = true;
+            }
+            
             hud.SetActive(false);
             StartCoroutine(EndCutscene());
             winCanvas.SetActive(true);
@@ -90,6 +101,12 @@ public class UIManager : MonoBehaviour
 
         }
 
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(12f);
+        sfxSource.enabled = false;
     }
 
     void Pause()

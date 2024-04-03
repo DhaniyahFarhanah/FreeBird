@@ -221,9 +221,6 @@ public class ComboManager : MonoBehaviour
             GameStateManager.SetPerfCombo(perfCombos);
             GameStateManager.SetGoodCombo(goodCombos);
             GameStateManager.SetBadCombo(badCombos);
-            AudioManager.Instance.Normalize();
-            AudioManager.Instance.StopMusic();
-            AudioManager.Instance.PlaySFX("Win");
             StopAllCoroutines();
             EmptyCanvas();
             GameStateManager.Playing(false);
