@@ -61,6 +61,7 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.clip = s.clip;
             musicSource.Play();
+            Debug.Log("Now playing: " + name);
         }
     }
 
@@ -127,25 +128,30 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FadeOutAndIn()
     {
-        //Fade out in 3 second(s)
         float initialVolume = musicSource.volume;
-        float time = 0f;
-        while (time < 3.0f)
-        {
-            time += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(initialVolume, 0f, time / 3.0f);
-            yield return null;
-        }
-        //musicSource.volume = 0f;
+        float fadeOutDuration = 3.0f;
+        float fadeInDuration = 5.0f;
 
-        // then, Fade in in 2 second(s)
-        time = 0f;
-        while (time < 2.0)
+        // Fade out
+        float time = 0f;
+        while (time < fadeOutDuration)
         {
             time += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0f, initialVolume, time / 2.0f);
+            musicSource.volume = Mathf.Lerp(initialVolume, 0f, time / fadeOutDuration);
             yield return null;
         }
+        musicSource.volume = 0f;
+        Normalize();
+
+        // Fade in
+        time = 0f;
+        while (time < fadeInDuration)
+        {
+            time += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(0f, initialVolume, time / fadeInDuration);
+            yield return null;
+        }
+
         musicSource.volume = initialVolume;
     }
 }

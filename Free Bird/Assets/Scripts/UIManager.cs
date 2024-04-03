@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] float cutsceneDelay;
     [SerializeField] float endCutsceneDelay;
     private bool gameWon = false;
+    private bool pauseDisabled = true;
 
     //To hide
     [SerializeField] GameObject sections;
@@ -58,7 +59,10 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) && !GameStateManager.GetEnd())
         {
-            Pause();
+            if (pauseDisabled == false)
+            {
+                Pause();
+            }
         }
 
         if (GameStateManager.GetEnd() && !GameStateManager.GetWin()) //loss
@@ -105,7 +109,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(10f);
         sfxSource.enabled = false;
     }
 
@@ -172,6 +176,7 @@ public class UIManager : MonoBehaviour
     {
         startMenu.SetActive(false);
         StartCoroutine(WaitForCutscene());
+        pauseDisabled = false;
     }
 
     IEnumerator WaitForCutscene()
@@ -187,8 +192,7 @@ public class UIManager : MonoBehaviour
     public void RestartButton()
     {
         AudioManager.Instance.PlaySFX("Click");
-        AudioManager.Instance.StopMusic();
-        AudioManager.Instance.PlayMusic("Menu");
+        AudioManager.Instance.PlayMusic("Easy");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
         GameStateManager.SetCombo("");
@@ -207,6 +211,7 @@ public class UIManager : MonoBehaviour
 
     public void MainMenu()
     {
+        sfxSource.enabled = true;
         AudioManager.Instance.PlaySFX("Click");
         AudioManager.Instance.StopMusic();
         AudioManager.Instance.PlayMusic("Menu");

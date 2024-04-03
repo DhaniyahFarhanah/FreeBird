@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Spatial : MonoBehaviour
 {
+    private bool musicTransitioned = false;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (gameObject.CompareTag("Entrance"))
@@ -13,7 +15,6 @@ public class Spatial : MonoBehaviour
 
         if (gameObject.CompareTag("EasyExit"))
         {
-            AudioManager.Instance.Normalize();
             AudioManager.Instance.Transition();
             StartCoroutine(DelayThenMedium());
         }
@@ -21,22 +22,31 @@ public class Spatial : MonoBehaviour
         if(gameObject.CompareTag("MediumExit"))
         {
             AudioManager.Instance.Transition();
-            AudioManager.Instance.Normalize();
-            //AudioManager.Instance.PlayMusic("Hard");
-            //AudioManager.Instance.Normalize();
             StartCoroutine(DelayThenHard());
         }
     }
 
     private IEnumerator DelayThenMedium()
     {
-        yield return new WaitForSeconds(3.5f);
-        AudioManager.Instance.PlayMusic("Medium");
+        yield return new WaitForSeconds(3.0f);
+        if (musicTransitioned == false)
+        {
+            AudioManager.Instance.PlayMusic("Medium");
+            musicTransitioned = true;
+        }
+        yield return new WaitForSeconds(10.0f);
+        musicTransitioned = false;
     }
 
     private IEnumerator DelayThenHard()
     {
-        yield return new WaitForSeconds(3.5f);
-        AudioManager.Instance.PlayMusic("Hard");
+        yield return new WaitForSeconds(3.0f);
+        if (musicTransitioned == false)
+        {
+            AudioManager.Instance.PlayMusic("Hard");
+            musicTransitioned = true;
+        }
+        yield return new WaitForSeconds(10.0f);
+        musicTransitioned = false;
     }
 }
