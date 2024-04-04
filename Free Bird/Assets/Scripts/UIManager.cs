@@ -187,7 +187,6 @@ public class UIManager : MonoBehaviour
     {
         startMenu.SetActive(false);
         StartCoroutine(WaitForCutscene());
-        pauseDisabled = false;
     }
 
     IEnumerator WaitForCutscene()
@@ -197,10 +196,10 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetCutscene(false);
         Cursor.visible = false;
         GameStateManager.Playing(true);
-        
+        pauseDisabled = false;
     }
 
-    public void RestartButton()
+        public void RestartButton()
     {
         AudioManager.Instance.PlaySFX("Click");
         AudioManager.Instance.PlayMusic("Easy");
