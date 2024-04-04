@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(10f);
-        sfxSource.enabled = false;
+        //sfxSource.volume = 0;
     }
 
     void Pause()
@@ -223,7 +223,7 @@ public class UIManager : MonoBehaviour
 
     public void MainMenu()
     {
-        AudioManager.Instance.PlaySFX("Click");
+        //AudioManager.Instance.PlaySFX("Click");
         AudioManager.Instance.PlayMusic("Menu");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
