@@ -76,15 +76,24 @@ public class UIManager : MonoBehaviour
         }
         else if (GameStateManager.GetEnd() && GameStateManager.GetWin()) //win
         {
-            if (gameWon == false)
+            if (gameWon == false && GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0)
+            {
+                AudioManager.Instance.Normalize();
+                AudioManager.Instance.StopMusic();
+                AudioManager.Instance.PlaySFX("Secret");
+                StartCoroutine(Delay());
+                gameWon = true;
+            }
+
+            else if (gameWon == false)
             {
                 AudioManager.Instance.Normalize();
                 AudioManager.Instance.StopMusic();
                 AudioManager.Instance.PlaySFX("Win");
+                StartCoroutine(Delay());
                 gameWon = true;
             }
-            
-            StartCoroutine(Delay());
+
             hud.SetActive(false);
             StartCoroutine(EndCutscene());
             winCanvas.SetActive(true);
@@ -92,7 +101,7 @@ public class UIManager : MonoBehaviour
             goodComboAmt.text = GameStateManager.GetGoodCombo().ToString();
             badComboAmt.text = GameStateManager.GetBadCombo().ToString();
 
-            if(GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0) //Perfect Ending
+            if (GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0) //Perfect Ending
             {
                 endCutsceneImg.sprite = secretEnd;
                 endQuote.text = "\"" + "S-son...?" + "\"";
