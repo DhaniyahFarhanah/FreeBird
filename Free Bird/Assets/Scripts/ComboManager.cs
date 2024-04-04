@@ -93,6 +93,7 @@ public class ComboManager : MonoBehaviour
 
             if(numOfCompletedCombo == maxComboForLevel && !GameStateManager.GetWin()) //move to next difficulty
             {
+                
                 numOfCompletedCombo = 0;
                 GameStateManager.SetDifficulty(lengthOfCombo + 2);
                 lengthOfCombo = GameStateManager.GetDifficulty();

@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
             goodComboAmt.text = GameStateManager.GetGoodCombo().ToString();
             badComboAmt.text = GameStateManager.GetBadCombo().ToString();
 
-            if(GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0)
+            if(GameStateManager.GetGoodCombo() == 0 && GameStateManager.GetBadCombo() == 0) //Perfect Ending
             {
                 endCutsceneImg.sprite = secretEnd;
                 endQuote.text = "\"" + "S-son...?" + "\"";
@@ -98,7 +98,7 @@ public class UIManager : MonoBehaviour
             else
             {
                 endCutsceneImg.sprite = normEnd;
-                endQuote.text = "\"" + "Fly high...free bird..." + "\"";
+                endQuote.text = "\"" + "Fly high...free bird..." + "\""; //Norm Ending
             }
 
             Cursor.visible = true;
@@ -204,6 +204,7 @@ public class UIManager : MonoBehaviour
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = false;
+        GameStateManager.SetSectionCode(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         //AudioManager.Instance.resetUI();
@@ -211,8 +212,7 @@ public class UIManager : MonoBehaviour
 
     public void MainMenu()
     {
-        sfxSource.enabled = true;
-        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.PlaySFX("Click");
         AudioManager.Instance.PlayMusic("Menu");
         GameStateManager.SetEnd(false);
         GameStateManager.SetDifficulty(2);
@@ -223,6 +223,7 @@ public class UIManager : MonoBehaviour
         pauseCanvas.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = true;
+        GameStateManager.SetSectionCode(1);
         StartCoroutine(MainMenuTran());
     }
 
