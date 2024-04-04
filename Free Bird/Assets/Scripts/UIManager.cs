@@ -212,7 +212,6 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         sfxSource.enabled = true;
-        AudioManager.Instance.PlaySFX("Click");
         AudioManager.Instance.StopMusic();
         AudioManager.Instance.PlayMusic("Menu");
         GameStateManager.SetEnd(false);
