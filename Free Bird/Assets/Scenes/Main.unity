@@ -26949,10 +26949,10 @@ MonoBehaviour:
   - {fileID: 1635600022}
   - {fileID: 1035414569}
   playerAnim: {fileID: 1250759345}
-  numOfEasyCombos: 1
-  numOfMidCombos: 1
-  numOfHardCombos: 1
-  numOfInsaneCombos: 1
+  numOfEasyCombos: 8
+  numOfMidCombos: 8
+  numOfHardCombos: 10
+  numOfInsaneCombos: 5
   maxDifficultyInt: 8
   perfect: {fileID: 1374663364}
   good: {fileID: 1247028342}

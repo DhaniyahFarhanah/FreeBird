@@ -41,8 +41,18 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.volume = GameStateManager.GetBGMVolume();
         sfxSource.volume = GameStateManager.GetSFXVolume();
+
+        if(!GameStateManager.GetEnd() && !GameStateManager.GetGameStatus() && !GameStateManager.GetWin())
+        {
+            StartCoroutine(Activate());
+        }
     }
 
+    IEnumerator Activate()
+    {
+        yield return new WaitForSeconds(1f);
+        sfxSource.enabled = true;
+    }
     public void StopMusic()
     {
         musicSource.Stop();

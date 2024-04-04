@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetEnd(false); //IDK WHY THE FUCK IT DOESN'T WORK WITHOUT THIS DUDE
         sections.SetActive(false);
         StopAllCoroutines();
-        
+
     }
 
     // Update is called once per frame
@@ -79,10 +79,10 @@ public class UIManager : MonoBehaviour
                 AudioManager.Instance.Normalize();
                 AudioManager.Instance.StopMusic();
                 AudioManager.Instance.PlaySFX("Win");
-                StartCoroutine(Delay());
                 gameWon = true;
             }
             
+            StartCoroutine(Delay());
             hud.SetActive(false);
             StartCoroutine(EndCutscene());
             winCanvas.SetActive(true);
