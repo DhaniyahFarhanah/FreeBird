@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator Activate()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         sfxSource.enabled = true;
     }
     public void StopMusic()

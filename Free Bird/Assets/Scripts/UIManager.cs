@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
         GameStateManager.SetEnd(false); //IDK WHY THE FUCK IT DOESN'T WORK WITHOUT THIS DUDE
         sections.SetActive(false);
         StopAllCoroutines();
+        sfxSource = GameObject.FindWithTag("SFX").GetComponent<AudioSource>();
+        musicSource = GameObject.FindWithTag("Music").GetComponent<AudioSource>();
 
     }
 

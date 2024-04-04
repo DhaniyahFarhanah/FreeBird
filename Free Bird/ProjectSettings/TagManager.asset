@@ -18,6 +18,8 @@ TagManager:
   - Entrance
   - EasyExit
   - MediumExit
+  - SFX
+  - Music
   layers:
   - Default
   - TransparentFX
