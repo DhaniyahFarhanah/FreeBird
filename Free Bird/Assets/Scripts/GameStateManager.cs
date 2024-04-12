@@ -33,8 +33,8 @@ public class GameStateManager
     public static bool cutscene = true;
     public static bool arrows = true;
     public static int difficultyArea = 1;
-    public static float BGMvolume = 1.0f;
-    public static float SFXvolume = 1.0f;
+    public static float BGMvolume = 0.5f;
+    public static float SFXvolume = 0.5f;
 
     public static int perfect = 0;
     public static int good = 0;

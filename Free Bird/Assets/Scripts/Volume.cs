@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Volume : MonoBehaviour
 {
     public Slider BGMSlider, SFXSlider;
-    public AudioSource WarningSource1, WarningSource2, WarningSource3;
+    public AudioSource WarningSource1, WarningSource2, WarningSource3, GuidedGuy;
 
     float bgmVolume;
     float sfxVolume;
@@ -74,5 +74,6 @@ public class Volume : MonoBehaviour
         WarningSource1.volume = sfxVolume;
         WarningSource2.volume = sfxVolume;
         WarningSource3.volume = sfxVolume;
+        GuidedGuy.volume = sfxVolume;
     }
 }
